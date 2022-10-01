@@ -1,0 +1,52 @@
+/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */ /* Import only what you need from Bulma */
+@import 'bulma/sass/utilities/_all';
+@import 'bulma/sass/base/_all';
+@import 'bulma/sass/elements/_all';
+@import 'bulma/sass/form/_all';
+@import 'bulma/sass/components/_all';
+@import 'bulma/sass/grid/_all';
+@import 'bulma/sass/helpers/_all';
+@import 'bulma/sass/layout/_all';
+
+:root {
+	--font-serif: 'Inter', sans-serif;
+	--font-16: 1.6rem;
+	--font-18: 1.8rem;
+	--font-24: 2.4rem;
+	--font-32: 3.2rem;
+	--font-80: 8rem;
+
+	--spacing-4: 0.4rem;
+	--spacing-8: 0.5rem;
+	--spacing-16: 1.6rem;
+	--spacing-20: 2rem;
+	--spacing-24: 2.4rem;
+	--spacing-32: 3.2rem;
+
+	--color-brand: hsl(204 88% 53%);
+	--color-text-primary: hsl(0 0% 98%);
+	--color-text-muted: hsl(210 34% 80%);
+	--color-bg-primary: #1A1F28;
+	--color-bg-secondary: hsl(209, 35%, 15%);
+	--color-btn-primary-active: var(--color-brand);
+	--color-btn-primary-active-hover: hsl(204 88% 60%);
+	--color-btn-primary-inactive: hsl(205 70% 33%);
+	--color-btn-secondary: hsl(192 19% 95%);
+	--color-border-primary: hsl(0, 0%, 34%);
+	--color-link-hover: hsl(209 22% 19%);
+	--color-placeholder: hsl(210 34% 80%);
+
+	--radius-base: 2.4rem;
+}
+
+html, body{
+    height: 100%;
+}
+
+
+body {
+	font-family: var(--font-serif);
+	font-size: var(--font-18);
+	color: var(--color-text-primary);
+	background-color: var(--color-bg-primary);
+}

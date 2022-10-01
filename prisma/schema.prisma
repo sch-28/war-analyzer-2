@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model War {
+  id      Int      @id @default(autoincrement())
+  date    DateTime
+  guilds  Guild[]
+  players Player[]
+  Log     Log[]
+}
+
+model Guild {
+  name    String   @id @unique
+  wars    War[]
+  players Player[]
+}
+
+model Player {
+  name        String @id @unique
+  guild       Guild  @relation(fields: [guild_name], references: [name])
+  guild_name  String
+  kills       Log[]  @relation("killer")
+  deaths      Log[]  @relation("victim")
+  joined_wars War[]
+}
+
+model Log {
+  id          Int       @id @default(autoincrement())
+  time        DateTime?
+  killer      Player    @relation("killer", fields: [killer_name], references: [name])
+  killer_name String
+  victim      Player    @relation("victim", fields: [victim_name], references: [name])
+  victim_name String
+  war         War       @relation(fields: [war_id], references: [id])
+  war_id      Int
+}
