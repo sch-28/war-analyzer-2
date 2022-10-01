@@ -10,11 +10,12 @@
 
 :root {
 	--font-serif: 'Inter', sans-serif;
+	--font-12: 1.2rem;
 	--font-16: 1.6rem;
 	--font-18: 1.8rem;
 	--font-24: 2.4rem;
 	--font-32: 3.2rem;
-	--font-80: 8rem;
+	--font-40: 4rem;
 
 	--spacing-4: 0.4rem;
 	--spacing-8: 0.5rem;
@@ -23,10 +24,10 @@
 	--spacing-24: 2.4rem;
 	--spacing-32: 3.2rem;
 
-	--color-brand: hsl(204 88% 53%);
+	--color-brand: #3d7de5;
 	--color-text-primary: hsl(0 0% 98%);
 	--color-text-muted: hsl(210 34% 80%);
-	--color-bg-primary: #1A1F28;
+	--color-bg-primary: #1a1f28;
 	--color-bg-secondary: hsl(209, 35%, 15%);
 	--color-btn-primary-active: var(--color-brand);
 	--color-btn-primary-active-hover: hsl(204 88% 60%);
@@ -35,18 +36,33 @@
 	--color-border-primary: hsl(0, 0%, 34%);
 	--color-link-hover: hsl(209 22% 19%);
 	--color-placeholder: hsl(210 34% 80%);
+	--color-info: hsl(204, 86%, 53%);
+	
 
-	--radius-base: 2.4rem;
+	--radius-base: 1rem;
 }
 
-html, body{
-    height: 100%;
+
+h1 {
+	font-size: var(--font-32);
+	line-height: var(--font-32);
+	font-weight: 600;
+	
+
 }
+h2{
+	font-size: var(--font-24);
+	font-weight: 500;
 
-
+	
+}
+h3{
+	font-size: var(--font-16);
+	
+}
 body {
-	font-family: var(--font-serif);
-	font-size: var(--font-18);
+	font-size: var(--font-12);
 	color: var(--color-text-primary);
 	background-color: var(--color-bg-primary);
 }
+	
