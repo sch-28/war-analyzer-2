@@ -37,32 +37,28 @@
 	--color-link-hover: hsl(209 22% 19%);
 	--color-placeholder: hsl(210 34% 80%);
 	--color-info: hsl(204, 86%, 53%);
-	
 
 	--radius-base: 1rem;
 }
-
 
 h1 {
 	font-size: var(--font-32);
 	line-height: var(--font-32);
 	font-weight: 600;
-	
-
 }
-h2{
+h2 {
 	font-size: var(--font-24);
 	font-weight: 500;
-
-	
 }
-h3{
+h3 {
 	font-size: var(--font-16);
-	
 }
 body {
 	font-size: var(--font-12);
 	color: var(--color-text-primary);
 	background-color: var(--color-bg-primary);
 }
-	
+
+html{
+	overflow-y: scroll;
+}
