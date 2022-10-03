@@ -11,35 +11,38 @@ datasource db {
 }
 
 model War {
-  id      Int      @id @default(autoincrement())
-  date    DateTime
-  guilds  Guild[]
-  players Player[]
-  Log     Log[]
+  id         Int      @id @default(autoincrement())
+  date       DateTime
+  is_nodewar Boolean
+  guilds     Guild[]
+  players    Player[]
+  logs       Log[]
 }
 
 model Guild {
-  name    String   @id @unique
-  wars    War[]
-  players Player[]
+  id     Int      @id @default(autoincrement())
+  name   String
+  wars   War[]
+  Player Player[]
 }
 
 model Player {
-  name        String @id @unique
-  guild       Guild  @relation(fields: [guild_name], references: [name])
-  guild_name  String
-  kills       Log[]  @relation("killer")
-  deaths      Log[]  @relation("victim")
-  joined_wars War[]
+  id       Int    @id @default(autoincrement())
+  name     String
+  guild    Guild  @relation(fields: [guild_id], references: [id])
+  guild_id Int
+  kills    Log[]  @relation("killer")
+  deaths   Log[]  @relation("victim")
+  wars     War[]
 }
 
 model Log {
-  id          Int       @id @default(autoincrement())
-  time        DateTime?
-  killer      Player    @relation("killer", fields: [killer_name], references: [name])
-  killer_name String
-  victim      Player    @relation("victim", fields: [victim_name], references: [name])
-  victim_name String
-  war         War       @relation(fields: [war_id], references: [id])
-  war_id      Int
+  id        Int       @id @default(autoincrement())
+  time      DateTime?
+  killer    Player    @relation("killer", fields: [killer_id], references: [id])
+  killer_id Int
+  victim    Player    @relation("victim", fields: [victim_id], references: [id])
+  victim_id Int
+  war       War       @relation(fields: [war_id], references: [id])
+  war_id    Int
 }
