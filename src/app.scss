@@ -7,6 +7,9 @@
 @import 'bulma/sass/grid/_all';
 @import 'bulma/sass/helpers/_all';
 @import 'bulma/sass/layout/_all';
+@import '@fortawesome/fontawesome-free/css/fontawesome';
+@import '@fortawesome/fontawesome-free/css/brands';
+@import '@fortawesome/fontawesome-free/css/solid';
 
 :root {
 	--font-serif: 'Inter', sans-serif;
@@ -28,7 +31,7 @@
 	--color-text-primary: hsl(0 0% 98%);
 	--color-text-muted: hsl(210 34% 80%);
 	--color-bg-primary: #1a1f28;
-	--color-bg-secondary: hsl(209, 35%, 15%);
+	--color-bg-secondary: #323c4e;
 	--color-btn-primary-active: var(--color-brand);
 	--color-btn-primary-active-hover: hsl(204 88% 60%);
 	--color-btn-primary-inactive: hsl(205 70% 33%);
@@ -39,6 +42,11 @@
 	--color-info: hsl(204, 86%, 53%);
 
 	--radius-base: 1rem;
+	
+
+
+	--toastBorderRadius: 0.5rem;
+	--toastWidth: 10rem;
 }
 
 h1 {
@@ -57,8 +65,47 @@ body {
 	font-size: var(--font-12);
 	color: var(--color-text-primary);
 	background-color: var(--color-bg-primary);
+	position: relative;
 }
 
-html{
+body::after {
+	content: '';
+	top: 0;
+	background-image: url('/images/background.jpg');
+	position: absolute;
+	object-fit: cover;
+	background-repeat: round;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	filter: opacity(0.15) blur(10px);
+	z-index: 0;
+	pointer-events: none;
+}
+
+html {
 	overflow-y: scroll;
+}
+
+input {
+	background-color: var(--color-bg-secondary) !important;
+	color: white !important;
+}
+
+label {
+	color: #fff !important;
+}
+
+input {
+	color-scheme: dark;
+}
+
+.radio:hover,
+.checkbox:hover {
+	color: #fff;
+}
+
+.datetimepicker-dummy .datetimepicker-dummy-wrapper {
+	background-color: var(--color-bg-secondary) !important;
+	border-color: hsl(0deg, 0%, 21%) !important;
 }

@@ -11,9 +11,12 @@
 		<ul class="menu-list">
 			<li><a class:is-active={is_url('/dashboard')} href="/dashboard">Dashboard</a></li>
 			<li><a class:is-active={is_url('/dashboard/war')} href="/dashboard/war">Wars</a></li>
+		</ul>
+		<p class="menu-label">Nodewar</p>
+		<ul class="menu-list">
+			<li><a class:is-active={is_url('/dashboard/nodewar')} href="/dashboard/war">Nodewars</a></li>
 			<li><a class:is-active={is_url('/dashboard/player')} href="/dashboard/player">Players</a></li>
-				<a class:is-active={is_url('/dashboard/guild')} href="/dashboard/guild">Guilds</a>
-
+			<a class:is-active={is_url('/dashboard/guild')} href="/dashboard/guild">Guilds</a>
 		</ul>
 		<p class="menu-label">Account</p>
 		<ul class="menu-list">
@@ -21,7 +24,9 @@
 			<li><a>Logout</a></li>
 		</ul>
 	</aside>
-	<slot />
+	<div class="slot">
+		<slot />
+	</div>
 </div>
 
 <style>
@@ -29,15 +34,22 @@
 		display: flex;
 		height: calc(100vh - 56px);
 		padding: 20px 0;
-		gap: 50px;
+		gap: 25px;
 	}
 	.menu {
 		display: block;
-		width: 20%;
+		width: 15%;
 		box-shadow: 0px 2px 16px rgb(10 10 10 / 30%);
 		background-color: rgba(255, 255, 255, 0.05);
 		border-radius: var(--radius-base);
 		padding: 15px;
+	}
+
+	.slot {
+		background-color: rgba(255, 255, 255, 0.05);
+		border-radius: var(--radius-base);
+		padding: 15px;
+		width: 85%;
 	}
 
 	.menu a {

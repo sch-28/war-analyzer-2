@@ -1,12 +1,25 @@
 <script lang="ts">
 	import '../app.scss';
 	import Header from '$root/components/header.svelte';
+
+	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		const app = new SvelteToast({
+			// Set where the toast container should be appended into
+			target: document.body,
+			props: {
+				options: {}
+			}
+		});
+	});
 </script>
 
 <div class="body">
-	<img src="/images/background.jpg" alt="test" class="background" />
 	<Header />
 	<slot />
+	<!-- <img src="/images/background.jpg" alt="test" class="background" /> -->
 </div>
 
 <style>
@@ -14,18 +27,8 @@
 		width: 95%;
 		max-width: 1448px;
 		margin: 0 auto;
+		position: relative;
 		height: 100%;
-	}
-
-	.background {
-		top: 0;
-		position: absolute;
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-		left: 0;
-		filter: opacity(0.15) blur(10px);
-		z-index: 0;
-		pointer-events: none;
+		z-index: 1;
 	}
 </style>
