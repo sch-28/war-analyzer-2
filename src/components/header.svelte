@@ -67,6 +67,7 @@
 
 	.navbar {
 		background-color: rgba(0, 0, 0, 0);
+		height: 56px;
 	}
 
 	.navbar-menu.is-active {
