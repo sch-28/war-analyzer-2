@@ -1,8 +1,14 @@
 <script lang="ts">
 	import { Log } from '$root/types/data';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { manager } from '../store';
 
 	let files: FileList;
+	let name: string;
+	let date: Date;
+	let is_nodewar: boolean;
+
+	let loaded_logs: Log[] = [];
 	$: {
 		if (files && files.length > 0) {
 			check_file(files[0]);
@@ -12,13 +18,22 @@
 	async function check_file(file: File) {
 		try {
 			const result = await load_data(file);
+			loaded_logs = result;
 		} catch (e) {
+			console.error(e);
 			toast.push('Invalid File', {
 				theme: {
 					'--toastBackground': '#F56565',
 					'--toastBarBackground': '#C53030'
 				}
 			});
+		}
+	}
+
+	function add_war() {
+		if (loaded_logs && loaded_logs.length > 0) {
+			$manager.add_war(name, date, is_nodewar, loaded_logs);
+			$manager = $manager;
 		}
 	}
 
@@ -45,52 +60,62 @@
 
 <div class="wrapper ">
 	<h2>Add War</h2>
-	<form>
-		<div class="field inline">
-			<div class="field ">
-				<label class="label " for="name">Name</label>
-				<div class="control">
-					<input class="input is-dark" type="text" placeholder="Text input" id="name" />
-				</div>
-			</div>
-			<div class="field ">
-				<label class="label " for="name">Date</label>
-				<div class="control">
-					<input class="input is-dark " type="date" placeholder="Text input" id="name" />
-				</div>
+	<div class="field inline">
+		<div class="field ">
+			<label class="label " for="name">Name</label>
+			<div class="control">
+				<input
+					class="input is-dark"
+					type="text"
+					placeholder="Text input"
+					id="name"
+					bind:value={name}
+				/>
 			</div>
 		</div>
-		<div class="field">
-			<div class="file is-dark" class:has-name={files && files.length > 0}>
-				<label class="file-label">
-					<input class="file-input" type="file" name="resume" bind:files />
-					<span class="file-cta ">
-						<span class="file-icon">
-							<i class="fas fa-upload" />
-						</span>
-						<span class="file-label"> Choose a file… </span>
+		<div class="field ">
+			<label class="label " for="name">Date</label>
+			<div class="control">
+				<input
+					class="input is-dark "
+					type="date"
+					placeholder="Text input"
+					id="name"
+					bind:value={date}
+				/>
+			</div>
+		</div>
+	</div>
+	<div class="field">
+		<div class="file is-dark" class:has-name={files && files.length > 0}>
+			<label class="file-label">
+				<input class="file-input" type="file" name="resume" bind:files />
+				<span class="file-cta ">
+					<span class="file-icon">
+						<i class="fas fa-upload" />
 					</span>
-					{#if files && files.length > 0}
-						<span class="file-name is-dark">{files[0].name}</span>
-					{/if}
-				</label>
-			</div>
-		</div>
-		<div class="control">
-			<label class="radio">
-				<input type="radio" name="answer" />
-				Nodewar
-			</label>
-			<label class="radio">
-				<input type="radio" name="answer" />
-				GvG
+					<span class="file-label"> Choose a file… </span>
+				</span>
+				{#if files && files.length > 0}
+					<span class="file-name is-dark">{files[0].name}</span>
+				{/if}
 			</label>
 		</div>
+	</div>
+	<div class="control">
+		<label class="radio">
+			<input type="radio" name="answer" value={1} bind:group={is_nodewar} />
+			Nodewar
+		</label>
+		<label class="radio">
+			<input type="radio" name="answer" value={0} bind:group={is_nodewar} />
+			GvG
+		</label>
+	</div>
 
-		<div class="control">
-			<button class="button is-link" type="submit">Add</button>
-		</div>
-	</form>
+	<div class="control">
+		<button class="button is-link" on:click={add_war}>Add</button>
+	</div>
 </div>
 
 <style>

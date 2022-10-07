@@ -39,12 +39,17 @@ export class Guild {
 
 export class War {
 	guilds: Local_Guild[] = [];
+	players: Local_Guild_Player[] = [];
 	date: Date;
 	name: string;
+	logs: Event[];
+	is_nodewar: boolean;
 
-	constructor(name: string, date: Date) {
+	constructor(name: string, date: Date, is_nodewar: boolean, logs: Event[]) {
 		this.date = date;
 		this.name = name;
+		this.logs = logs;
+		this.is_nodewar = is_nodewar;
 	}
 }
 
@@ -87,7 +92,7 @@ export class Event {
 	kill: boolean;
 	time: Date;
 
-	constructor(p1: Player, p2: Player, kill: boolean, guild: string, time: Date) {
+	constructor(p1: Player, p2: Player, kill: boolean, time: Date) {
 		this.player_one = p1;
 		this.player_two = p2;
 		this.kill = kill;
@@ -129,5 +134,9 @@ export class Log {
 			return new Log(this.player_two, this.player_one, !this.kill, 'Guild', this.time);
 		}
 		return this;
+	}
+
+	get parsed_time() {
+		return new Date(this.time);
 	}
 }
