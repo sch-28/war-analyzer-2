@@ -72,11 +72,11 @@ export class Manager {
 		return player;
 	}
 
-	static from_json(json: { name: string; date: Date; is_nodewar: boolean; logs: Log[] }[]) {
+	static from_json(json: { name: string; date: string; is_nodewar: boolean; logs: Log[] }[]) {
 		const manager = new Manager();
 
 		for (let war of json) {
-			manager.add_war(war.name, war.date, war.is_nodewar, war.logs);
+			manager.add_war(war.name, new Date(war.date), war.is_nodewar, war.logs);
 		}
 
 		return manager;
@@ -92,7 +92,13 @@ export class Manager {
 				is_nodewar: war.is_nodewar,
 				logs: war.logs.map(
 					(e) =>
-						new Log(e.player_one.name, e.player_two.name, e.kill, e.player_two.guild.name, ""+e.time)
+						new Log(
+							e.player_one.name,
+							e.player_two.name,
+							e.kill,
+							e.player_two.guild.name,
+							'' + e.time
+						)
 				)
 			});
 		}
