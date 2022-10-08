@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { Log } from '$root/types/data';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { getContext } from 'svelte';
 	import { manager } from '../store';
+
+	const { close } = getContext('simple-modal') as any;
 
 	let files: FileList;
 	let name: string;
@@ -42,11 +45,15 @@
 		}
 	}
 
-	function add_war() {
+	function add_war(e: Event) {
+		e.preventDefault();
+
 		if (loaded_logs && loaded_logs.length > 0) {
 			$manager.add_war(name, date, !!is_nodewar, loaded_logs);
 			$manager = $manager;
 		}
+
+		close();
 	}
 
 	async function load_data(file: File) {
@@ -104,7 +111,7 @@
 		<div class="field">
 			<div class="file is-dark" class:has-name={files && files.length > 0}>
 				<label class="file-label">
-					<input class="file-input" type="file" name="resume" bind:files required/>
+					<input class="file-input" type="file" name="resume" bind:files required />
 					<span class="file-cta ">
 						<span class="file-icon">
 							<i class="fas fa-upload" />

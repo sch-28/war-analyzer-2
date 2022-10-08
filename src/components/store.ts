@@ -42,11 +42,17 @@ export class Manager {
 	wars: War[];
 	players: Player[];
 	guilds: Guild[];
+	total_wars: number;
 
 	constructor() {
 		this.wars = [];
 		this.players = [];
 		this.guilds = [];
+		this.total_wars = 0;
+	}
+
+	get_war(id: number) {
+		return this.wars.find((war) => war.id == id);
 	}
 
 	find_or_create_guild(name: string) {
@@ -134,14 +140,15 @@ export class Manager {
 			events.push(event);
 		}
 
-		const war = new War(name, date, is_nodewar, events);
+		const war = new War(this.total_wars, name, date, is_nodewar, events);
 		this.wars.push(war);
+		this.total_wars++;
 
 		for (let guild of guilds) {
 			// create local guild that only contains information of the current war
 			const local_guild = new Local_Guild(war, guild);
 			guild.locals.push(local_guild);
-			war.guilds.push(local_guild);
+			war.local_guilds.push(local_guild);
 
 			// get all joined players and add them to the local guild
 			for (let player of players) {
@@ -149,7 +156,7 @@ export class Manager {
 					// create new local player
 					const local_player = new Local_Guild_Player(local_guild, player);
 
-					war.players.push(local_player);
+					war.local_players.push(local_player);
 
 					local_guild.local_players.push(local_player);
 					player.locals.push(local_player);

@@ -87,6 +87,7 @@ body::after {
 
 html {
 	overflow-y: scroll;
+	background-color: var(--color-bg-primary);
 }
 
 input {
@@ -110,4 +111,22 @@ input {
 .datetimepicker-dummy .datetimepicker-dummy-wrapper {
 	background-color: var(--color-bg-secondary) !important;
 	border-color: hsl(0deg, 0%, 21%) !important;
+}
+
+a:hover{
+	color: #3d7de5a6 !important;
+}
+
+::-webkit-scrollbar {
+	width: 4px;
+	height: 4px;
+}
+
+::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--color-brand);
+	border-radius: var(--radius-base);
 }

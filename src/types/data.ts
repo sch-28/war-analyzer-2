@@ -38,18 +38,36 @@ export class Guild {
 }
 
 export class War {
-	guilds: Local_Guild[] = [];
-	players: Local_Guild_Player[] = [];
+	id: number;
+	local_guilds: Local_Guild[] = [];
+	local_players: Local_Guild_Player[] = [];
 	date: Date;
 	name: string;
 	logs: Event[];
 	is_nodewar: boolean;
 
-	constructor(name: string, date: Date, is_nodewar: boolean, logs: Event[]) {
+	constructor(id: number, name: string, date: Date, is_nodewar: boolean, logs: Event[]) {
 		this.date = date;
 		this.name = name;
 		this.logs = logs;
 		this.is_nodewar = is_nodewar;
+		this.id = id;
+	}
+
+	get formatted_date() {
+		return this.date.toLocaleDateString();
+	}
+
+	get enemy_local_guilds() {
+		return this.local_guilds.filter((g) => g.guild.name != 'Guild');
+	}
+
+	get kills() {
+		return this.logs.filter((l) => l.kill);
+	}
+
+	get deaths() {
+		return this.logs.filter((l) => !l.kill);
 	}
 }
 

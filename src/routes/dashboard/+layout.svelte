@@ -51,6 +51,7 @@
 		padding: 15px;
 		width: 85%;
 		box-shadow: 0px 2px 16px rgb(10 10 10 / 30%);
+		overflow: auto;
 	}
 
 	.menu a {
