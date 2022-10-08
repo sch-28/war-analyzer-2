@@ -10,7 +10,7 @@
 @import '@fortawesome/fontawesome-free/css/fontawesome';
 @import '@fortawesome/fontawesome-free/css/brands';
 @import '@fortawesome/fontawesome-free/css/solid';
-
+@import "gridjs/dist/theme/mermaid.min.css";
 @import 'bulma-list/sass/bulma-list';
 
 :root {
@@ -44,8 +44,6 @@
 	--color-info: hsl(204, 86%, 53%);
 
 	--radius-base: 1rem;
-	
-
 
 	--toastBorderRadius: 0.5rem;
 	--toastWidth: 10rem;
@@ -113,8 +111,12 @@ input {
 	border-color: hsl(0deg, 0%, 21%) !important;
 }
 
-a:hover{
+ a:hover  {
 	color: #3d7de5a6 !important;
+}
+
+li a:hover{
+	color: black !important;
 }
 
 ::-webkit-scrollbar {
@@ -129,4 +131,42 @@ a:hover{
 ::-webkit-scrollbar-thumb {
 	background-color: var(--color-brand);
 	border-radius: var(--radius-base);
+}
+
+p strong {
+	color: #fff;
+	font-size: var(--font-18);
+}
+
+th.gridjs-th,.gridjs-tbody,td.gridjs-td{
+	background-color: transparent;
+	color: white;
+}
+
+.gridjs-wrapper{
+	box-shadow: none;
+}
+
+table.gridjs-table{
+	width: 100%;
+}
+th.gridjs-th-sort:hover,
+th.gridjs-th-sort:focus,
+.list.has-hoverable-list-items .list-item:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+.gridjs-container{
+	padding: 0;
+}
+
+th.gridjs-th{
+	border: unset !important;
+}
+.gridjs-th-content{
+	text-transform: capitalize;
+}
+
+.gridjs td{
+	text-overflow: ellipsis;
+    overflow: hidden;
 }

@@ -22,10 +22,3 @@
 		</div>
 	</nav>
 </div>
-
-<style>
-	strong {
-		color: #fff;
-		font-size: var(--font-18);
-	}
-</style>

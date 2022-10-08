@@ -3,6 +3,10 @@
 	$: is_url = (url: string) => {
 		return $page.url.pathname === url;
 	};
+
+	$: is_suburl = (url: string) => {
+		return $page.url.pathname.includes(url);
+	};
 </script>
 
 <div class="wrapper">
@@ -10,7 +14,12 @@
 		<p class="menu-label">General</p>
 		<ul class="menu-list">
 			<li><a class:is-active={is_url('/dashboard')} href="/dashboard">Dashboard</a></li>
-			<li><a class:is-active={is_url('/dashboard/war')} href="/dashboard/war">Wars</a></li>
+			<li>
+				<a
+					class:is-active={is_url('/dashboard/war') || is_suburl('/dashboard/war/')}
+					href="/dashboard/war">Wars</a
+				>
+			</li>
 		</ul>
 		<p class="menu-label">Nodewar</p>
 		<ul class="menu-list">

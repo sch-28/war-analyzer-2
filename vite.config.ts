@@ -9,6 +9,9 @@ const config: UserConfig = {
 				additionalData: '@use "src/variables.scss" as *;'
 			}
 		}
+	},
+	ssr: {
+		noExternal: ['chart.js']
 	}
 };
 

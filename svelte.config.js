@@ -18,6 +18,9 @@ const config = {
 		alias: {
 			$root: 'src'
 		}
+	},
+	optimizeDeps: {
+		exclude: ['gridjs']
 	}
 };
 

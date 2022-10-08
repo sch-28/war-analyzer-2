@@ -140,7 +140,7 @@ export class Manager {
 			events.push(event);
 		}
 
-		const war = new War(this.total_wars, name, date, is_nodewar, events);
+		const war = new War(this.total_wars, name, new Date(date), is_nodewar, events);
 		this.wars.push(war);
 		this.total_wars++;
 
@@ -165,6 +165,7 @@ export class Manager {
 					for (let event of events) {
 						if (event.player_one == player || event.player_two == player) {
 							local_player.local_events.push(event);
+							local_guild.local_events.push(event);
 						}
 					}
 				}

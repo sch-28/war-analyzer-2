@@ -7,5 +7,5 @@
 	}
 </script>
 
-<button class="button is-link" on:click={open_add_war}>+ Add War</button>
+<button class="button is-link" on:click={open_add_war}>Add War</button>
 

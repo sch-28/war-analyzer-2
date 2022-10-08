@@ -8,7 +8,7 @@
 
 	let files: FileList;
 	let name: string;
-	let date: Date;
+	let date: Date = new Date();
 	let is_nodewar = 1;
 	let form: HTMLFormElement;
 
@@ -95,13 +95,12 @@
 				</div>
 			</div>
 			<div class="field ">
-				<label class="label " for="name">Date</label>
+				<label class="label " for="date">Date</label>
 				<div class="control">
 					<input
 						class="input is-dark "
 						type="date"
-						placeholder="Text input"
-						id="name"
+						id="date"
 						required
 						bind:value={date}
 					/>

@@ -116,16 +116,10 @@
 		width: 100%;
 	}
 
-	.file-cta,
-	.file-name,
 	input {
 		font-size: 1rem;
 		color: #fff;
 		border-color: var(--color-bg-secondary);
-	}
-
-	.file-cta {
-		background-color: var(--color-bg-secondary);
 	}
 
 	button {

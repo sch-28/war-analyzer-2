@@ -1,32 +1,3 @@
-/* export class War {
-	date: Date = new Date();
-	is_nodewar: Boolean = false;
-	name: string = '';
-	guilds: Guild[] = [];
-}
-
-export class Guild {
-	name: string = '';
-	players: Player[] = [];
-
-	add_player(name: string) {
-		this.players.push(new Player(name, this));
-	}
-}
-
-export class Player {
-	name: string = '';
-	guild: Guild;
-
-	constructor(name: string, guild: Guild) {
-		this.name = name;
-		this.guild = guild;
-	}
-}
-
-
- */
-
 export class Guild {
 	locals: Local_Guild[] = [];
 	name: string;
@@ -69,6 +40,11 @@ export class War {
 	get deaths() {
 		return this.logs.filter((l) => !l.kill);
 	}
+
+	get sorted_guilds() {
+		const guilds = [...this.local_guilds].sort((a, b) => b.kills - b.deaths - (a.kills - a.deaths));
+		return guilds;
+	}
 }
 
 export class Player {
@@ -87,10 +63,44 @@ export class Local_Guild {
 	guild: Guild;
 	war: War;
 	local_players: Local_Guild_Player[] = [];
+	local_events: Event[] = [];
 
 	constructor(war: War, guild: Guild) {
 		this.war = war;
 		this.guild = guild;
+	}
+
+	get kill_events() {
+		return this.local_events.filter((l) => l.normalized_kill(this.guild));
+	}
+
+	get death_events() {
+		return this.local_events.filter((l) => !l.normalized_kill(this.guild));
+	}
+
+	get kills() {
+		return this.kill_events.length;
+	}
+
+	get deaths() {
+		return this.death_events.length;
+	}
+
+	get kd() {
+		if (this.deaths == 0) {
+			return this.kills;
+		}
+
+		return this.kills / this.deaths;
+	}
+
+	get average_kills() {
+		if (this.local_players.length == 0) return 0;
+		return this.kills / this.local_players.length;
+	}
+
+	get sorted_players() {
+		return [...this.local_players].sort((a, b) => b.kills - a.kills);
 	}
 }
 
@@ -102,6 +112,35 @@ export class Local_Guild_Player {
 	constructor(local_guild: Local_Guild, player: Player) {
 		this.local_guild = local_guild;
 		this.player = player;
+	}
+
+	get kill_events() {
+		return this.local_events.filter((l) => l.normalized_kill(this.player.guild));
+	}
+
+	get death_events() {
+		return this.local_events.filter((l) => !l.normalized_kill(this.player.guild));
+	}
+
+	get kills() {
+		return this.kill_events.length;
+	}
+
+	get deaths() {
+		return this.death_events.length;
+	}
+
+	get kd() {
+		if (this.deaths == 0) {
+			return this.kills;
+		}
+
+		return this.kills / this.deaths;
+	}
+
+	get performance() {
+		if (this.local_guild.average_kills == 0) return this.kills;
+		return this.kills / this.local_guild.average_kills;
 	}
 }
 export class Event {
@@ -115,6 +154,13 @@ export class Event {
 		this.player_two = p2;
 		this.kill = kill;
 		this.time = time;
+	}
+
+	normalized_kill(guild: Guild) {
+		if (guild == this.player_one.guild) {
+			return this.kill;
+		}
+		return !this.kill;
 	}
 }
 
@@ -145,13 +191,6 @@ export class Log {
 		}
 
 		throw new Error(`Invalid Log: ${log}`);
-	}
-
-	normalized_log(guild: string) {
-		if (guild == this.guild) {
-			return new Log(this.player_two, this.player_one, !this.kill, 'Guild', this.time);
-		}
-		return this;
 	}
 
 	get parsed_time() {
