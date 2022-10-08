@@ -1,5 +1,5 @@
-<	import type { VNode } from 'preact';
-script lang="ts">
+<script lang="ts">
+	import type { VNode } from 'preact';
 	import { page } from '$app/stores';
 	import FormNumber from '$root/components/dashboard/formatted_number.svelte';
 	import { manager } from '$root/components/store';
@@ -14,7 +14,7 @@ script lang="ts">
 	Chart.register(...registerables);
 
 	let war: War | undefined;
-	let data: { name: string; kills: number; deaths: number; performance: VNode<{}>; }[] = [];
+	let data: { name: string; kills: number; deaths: number; performance: VNode<{}> }[] = [];
 	let grid: Grid;
 	let show_grid_header = false;
 	$: grid?.$on('ready', () =>
