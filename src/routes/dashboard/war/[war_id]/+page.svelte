@@ -143,37 +143,38 @@
 				<Grid {data} sort fixedHeader bind:this={grid} />
 			</div>
 		</div>
+		<div class="tile leaderboard" class:padding={war.local_guilds.length > 3}>
+			<div
+				class="list has-hoverable-list-items has-visible-pointer-controls "
+				class:scrollable={war.local_guilds.length > 3}
+			>
+				{#each war.sorted_guilds as local_guild, index}
+					<div class="list-item">
+						<div class="list-item-image">
+							<span class=" level-item icon has-text-white">
+								{#if index < 9}
+									<i class="fas fa-{index + 1} " />
+								{:else}
+									<i class="fas fa-{(index + 1).toString()[0]} " />
+									<i class="fas fa-{(index + 1).toString()[1]} " />
+								{/if}
+							</span>
+						</div>
 
-		<div
-			class="tile list has-hoverable-list-items has-visible-pointer-controls leaderboard"
-			class:scrollable={war.local_guilds.length > 3}
-		>
-			{#each war.sorted_guilds as local_guild, index}
-				<div class="list-item">
-					<div class="list-item-image">
-						<span class=" level-item icon has-text-white">
-							{#if index < 9}
-								<i class="fas fa-{index + 1} " />
-							{:else}
-								<i class="fas fa-{(index + 1).toString()[0]} " />
-								<i class="fas fa-{(index + 1).toString()[1]} " />
-							{/if}
-						</span>
-					</div>
+						<div class="list-item-content">
+							<div class="list-item-title has-text-white">{local_guild.guild.name}</div>
+							<div class="list-item-description">{local_guild.local_players.length} Players</div>
+						</div>
 
-					<div class="list-item-content">
-						<div class="list-item-title has-text-white">{local_guild.guild.name}</div>
-						<div class="list-item-description">{local_guild.local_players.length} Players</div>
+						<div class="list-item-controls">
+							<FormNumber
+								number={local_guild.kill_events.length - local_guild.death_events.length}
+								neutral={0}
+							/>
+						</div>
 					</div>
-
-					<div class="list-item-controls">
-						<FormNumber
-							number={local_guild.kill_events.length - local_guild.death_events.length}
-							neutral={0}
-						/>
-					</div>
-				</div>
-			{/each}
+				{/each}
+			</div>
 		</div>
 	</div>
 {/if}
@@ -240,10 +241,16 @@
 
 	.list {
 		color: #fff;
+		width: 100%;
 	}
 	.is-ancestor {
 		gap: 25px;
 		height: 90%;
+	}
+
+	.padding {
+		padding-top: 0.75rem;
+		padding-bottom: 0.75rem;
 	}
 
 	.players {
