@@ -180,16 +180,27 @@
 
 <style>
 	:global(.show_header th) {
-		background-color: var(--color-brand) !important;
-		color: black;
-		z-index: 5;
+		background-color: rgb(48 51 58) !important;
+	}
+
+	:global(.gridjs th) {
+		transition: all 200ms;
+	}
+
+	:global(.gridjs-wrapper) {
+		border-radius: unset !important;
 	}
 
 	.show_header {
 		position: relative;
 	}
 
-	:global(.show_header::before) {
+	:global(.show_header::before, .show_header::after) {
+		background-color: rgb(48 51 58) !important;
+		transition: all 200ms;
+	}
+
+	.players::after {
 		content: '';
 		width: 100%;
 		left: 0;
@@ -197,9 +208,23 @@
 		position: absolute;
 		border-top-left-radius: var(--radius-base);
 		border-top-right-radius: var(--radius-base);
-		height: 69px;
-		background-color: var(--color-brand);
+		height: 12px;
+		transition: all 200ms;
+		background-color: transparent;
 	}
+	.players::before {
+		content: '';
+		width: 4px;
+		right: 0;
+		top: 0px;
+		position: absolute;
+		border-top-left-radius: var(--radius-base);
+		border-top-right-radius: var(--radius-base);
+		height: 57px;
+		transition: all 200ms;
+		background-color: transparent;
+	}
+
 	.scrollable {
 		overflow-y: scroll;
 		max-height: 276px;
@@ -224,6 +249,7 @@
 	.players {
 		max-height: 100%;
 		min-height: 100%;
+		position: relative;
 	}
 
 	.tile:not(.is-ancestor) {
