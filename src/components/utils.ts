@@ -8,6 +8,6 @@ export function find_or_push<T>(array: Array<T>, object: T) {
 	return object;
 }
 
-export function format(number: number) {
-	return number.toFixed(2);
+export function format(number: number, places:number = 2) {
+	return number.toFixed(places);
 }

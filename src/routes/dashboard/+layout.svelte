@@ -20,13 +20,15 @@
 					href="/dashboard/war">Wars</a
 				>
 			</li>
+			<li><a class:is-active={is_url('/dashboard/player')} href="/dashboard/player">Players</a></li>
+			<li><a class:is-active={is_url('/dashboard/guild')} href="/dashboard/guild">Guilds</a></li>
 		</ul>
-		<p class="menu-label">Nodewar</p>
+		<!-- <p class="menu-label">Nodewar</p>
 		<ul class="menu-list">
 			<li><a class:is-active={is_url('/dashboard/nodewar')} href="/dashboard/war">Nodewars</a></li>
 			<li><a class:is-active={is_url('/dashboard/player')} href="/dashboard/player">Players</a></li>
 			<a class:is-active={is_url('/dashboard/guild')} href="/dashboard/guild">Guilds</a>
-		</ul>
+		</ul> -->
 		<p class="menu-label">Account</p>
 		<ul class="menu-list">
 			<li><a>Shared Wars</a></li>

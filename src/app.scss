@@ -1,4 +1,5 @@
-/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */ /* Import only what you need from Bulma */
+/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+/* Import only what you need from Bulma */
 @import 'bulma/sass/utilities/_all';
 @import 'bulma/sass/base/_all';
 @import 'bulma/sass/elements/_all';
@@ -42,6 +43,7 @@
 	--color-link-hover: hsl(209 22% 19%);
 	--color-placeholder: hsl(210 34% 80%);
 	--color-info: hsl(204, 86%, 53%);
+	--hover: rgba(0, 0, 0, 0.1);
 
 	--radius-base: 1rem;
 
@@ -115,7 +117,10 @@ input {
 	color: #3d7de5a6 !important;
 }
 
-li a:hover{
+li a.is-active{
+	color: white !important;
+}
+li a:hover:not(.is-active){
 	color: black !important;
 }
 
@@ -138,13 +143,18 @@ p strong {
 	font-size: var(--font-18);
 }
 
-th.gridjs-th,.gridjs-tbody,td.gridjs-td{
+th.gridjs-th,.gridjs-tbody,td.gridjs-td, .gridjs-loading-bar{
 	background-color: transparent;
 	color: white;
 }
+.gridjs-loading-bar{
+	display: none;
+}
+
 
 .gridjs-wrapper{
 	box-shadow: none;
+	overflow-y: scroll;
 }
 
 table.gridjs-table{
@@ -164,6 +174,12 @@ th.gridjs-th{
 }
 .gridjs-th-content{
 	text-transform: capitalize;
+
+}
+
+.gridjs tr:hover td{
+	background-color: var(--hover);
+	cursor: pointer;
 }
 
 .gridjs td{

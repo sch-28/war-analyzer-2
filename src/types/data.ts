@@ -1,3 +1,7 @@
+import dayjs, { Dayjs } from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(customParseFormat);
+
 export class Guild {
 	locals: Local_Guild[] = [];
 	name: string;
@@ -102,6 +106,17 @@ export class Local_Guild {
 	get sorted_players() {
 		return [...this.local_players].sort((a, b) => b.kills - a.kills);
 	}
+
+	get duration() {
+		const logs = [...this.kill_events, ...this.death_events];
+		if (logs.length < 2) return 0;
+
+		logs.sort((a, b) => (b.time <= a.time ? 1 : -1));
+
+		const start = logs[0].time;
+		const end = logs[logs.length - 1].time;
+		return end.diff(start, 'minutes');
+	}
 }
 
 export class Local_Guild_Player {
@@ -142,14 +157,31 @@ export class Local_Guild_Player {
 		if (this.local_guild.average_kills == 0) return this.kills;
 		return this.kills / this.local_guild.average_kills;
 	}
+
+	get join_duration() {
+		const logs = [...this.kill_events, ...this.death_events];
+		if (logs.length < 2) return 0;
+
+		logs.sort((a, b) => (b.time <= a.time ? 1 : -1));
+
+		const start = logs[0].time;
+		const end = logs[logs.length - 1].time;
+		return end.diff(start, 'minutes');
+	}
+
+	get join_duration_percentage() {
+		if (this.join_duration == 0) return 0;
+
+		return this.join_duration / this.local_guild.duration;
+	}
 }
 export class Event {
 	player_one: Player;
 	player_two: Player;
 	kill: boolean;
-	time: Date;
+	time: Dayjs;
 
-	constructor(p1: Player, p2: Player, kill: boolean, time: Date) {
+	constructor(p1: Player, p2: Player, kill: boolean, time: Dayjs) {
 		this.player_one = p1;
 		this.player_two = p2;
 		this.kill = kill;
@@ -161,6 +193,10 @@ export class Event {
 			return this.kill;
 		}
 		return !this.kill;
+	}
+
+	get time_string() {
+		return this.time.format('HH:mm:ss');
 	}
 }
 
@@ -194,6 +230,6 @@ export class Log {
 	}
 
 	get parsed_time() {
-		return new Date(this.time);
+		return dayjs(this.time, 'HH:mm:ss');
 	}
 }

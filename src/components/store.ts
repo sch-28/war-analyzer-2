@@ -78,21 +78,26 @@ export class Manager {
 		return player;
 	}
 
-	static from_json(json: { name: string; date: string; is_nodewar: boolean; logs: Log[] }[]) {
+	static from_json(json: {
+		wars: { id: number; name: string; date: string; is_nodewar: boolean; logs: Log[] }[];
+	}) {
 		const manager = new Manager();
-
-		for (let war of json) {
-			manager.add_war(war.name, new Date(war.date), war.is_nodewar, war.logs);
+		let highest_id = 0;
+		for (let war of json.wars) {
+			war.logs = war.logs.map((l) => new Log(l.player_one, l.player_two, l.kill, l.guild, l.time));
+			const w = manager.add_war(war.name, new Date(war.date), war.is_nodewar, war.logs);
+			w.id = war.id;
+			if (war.id > highest_id) highest_id = war.id;
 		}
-
+		manager.total_wars = highest_id + 1;
 		return manager;
 	}
 
 	get_json() {
 		const json_wars = [];
-
 		for (let war of this.wars) {
 			json_wars.push({
+				id: war.id,
 				name: war.name,
 				date: war.date,
 				is_nodewar: war.is_nodewar,
@@ -103,13 +108,13 @@ export class Manager {
 							e.player_two.name,
 							e.kill,
 							e.player_two.guild.name,
-							'' + e.time
+							e.time_string
 						)
 				)
 			});
 		}
 
-		return JSON.stringify(json_wars);
+		return JSON.stringify({ wars: json_wars });
 	}
 
 	add_war(name: string, date: Date, is_nodewar: boolean, logs: Log[]) {
@@ -131,9 +136,7 @@ export class Manager {
 
 			// players.push(player_one, player_two);
 			players.add(player_one).add(player_two);
-
 			const event = new Event(player_one, player_two, log.kill, log.parsed_time);
-
 			player_one.events.push(event);
 			player_two.events.push(event);
 
@@ -171,6 +174,8 @@ export class Manager {
 				}
 			}
 		}
+
+		return war;
 	}
 }
 
