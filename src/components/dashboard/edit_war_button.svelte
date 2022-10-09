@@ -16,3 +16,9 @@
 	</span>
 	<span>Edit</span></button
 >
+
+<style>
+	i {
+		color: black;
+	}
+</style>

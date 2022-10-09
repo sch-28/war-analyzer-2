@@ -8,6 +8,8 @@
 	import { Chart, registerables, type ChartData } from 'chart.js';
 	import Grid from 'gridjs-svelte';
 	import { html } from 'gridjs';
+	import Modal from 'svelte-simple-modal';
+	import EditWarButton from '$root/components/dashboard/edit_war_button.svelte';
 
 	let chart: HTMLCanvasElement;
 
@@ -128,7 +130,11 @@
 
 		<!-- Right side -->
 		<div class="level-right">
-			<p class="level-item" />
+			<div class="level-item">
+				<Modal closeButton={false} styleWindow={{ background: 'var(--color-bg-primary)' }}>
+					<EditWarButton {war} />
+				</Modal>
+			</div>
 		</div>
 	</nav>
 	<div class="tile is-ancestor p-3">
@@ -175,6 +181,7 @@
 <style>
 	:global(.show_header th) {
 		background-color: var(--color-brand) !important;
+		color: black;
 		z-index: 5;
 	}
 

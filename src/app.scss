@@ -29,7 +29,7 @@
 	--spacing-24: 2.4rem;
 	--spacing-32: 3.2rem;
 
-	--color-brand: #3d7de5;
+	--color-brand: hsl(0 0% 98%);
 	--color-text-primary: hsl(0 0% 98%);
 	--color-text-muted: hsl(210 34% 80%);
 	--color-bg-primary: #1a1f28;
@@ -169,4 +169,8 @@ th.gridjs-th{
 .gridjs td{
 	text-overflow: ellipsis;
     overflow: hidden;
+	border: 1px solid #e5e7eb1f;
+}
+.list-item:not(:last-child):not(.box) {
+    border-bottom: 1px solid #e5e7eb1f;
 }
