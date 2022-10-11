@@ -18,7 +18,13 @@
 		}
 	}
 
-	let grid_data: {id:number, date: string; kills: number; deaths: number; performance: VNode<{}> }[] = [];
+	let grid_data: {
+		id: number;
+		date: string;
+		kills: number;
+		deaths: number;
+		performance: VNode<{}>;
+	}[] = [];
 	let grid: Grid;
 	let show_grid_header = false;
 
@@ -111,7 +117,7 @@
 
 	function open_player(event: CustomEvent) {
 		const id = event.detail[1]._cells[0].data;
-			goto(`/dashboard/war/${id}`);
+		goto(`/dashboard/war/${id}`);
 	}
 </script>
 
@@ -185,7 +191,40 @@
 				/>
 			</div>
 		</div>
-		<div class="tile leaderboard" />
+		<div class="tile stats">
+			<div class="stat">
+				<span>Participated</span>
+				<span>
+					<FormattedNumber
+						number={player.participation_percentage * 100}
+						neutral={50}
+						after="%"
+						places={0}
+					/> ({player.participation}/{player.guild.locals.length})
+				</span>
+			</div>
+			<div class="stat">
+				<span>Average Performance</span>
+				<FormattedNumber number={player.average_performance} neutral={1} />
+			</div>
+			<div class="stat">
+				<span>Average Join Duration</span>
+				<FormattedNumber
+					number={player.average_join_duration * 100}
+					neutral={75}
+					after="%"
+					places={0}
+				/>
+			</div>
+			<div class="stat">
+				<span>Average Kills</span>
+				{format(player.average_kills)}
+			</div>
+			<div class="stat">
+				<span>Average Deaths</span>
+				{format(player.average_deaths)}
+			</div>
+		</div>
 	</div>
 {/if}
 
@@ -197,5 +236,15 @@
 	.is-ancestor {
 		gap: 25px;
 		height: 90%;
+	}
+	.stat {
+		display: flex;
+		flex-direction: column;
+	}
+	.stats {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 26px 24px;
 	}
 </style>

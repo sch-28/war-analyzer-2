@@ -276,3 +276,16 @@ th.gridjs-th{
 tbody tr:first-child td {
 	border-top: unset !important;
 }
+
+i {
+	color: white;
+	font-style: normal;
+}
+
+.negative {
+	color: hsl(348, 100%, 61%);
+}
+
+.positive {
+	color: hsl(141, 71%, 48%);
+}

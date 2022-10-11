@@ -51,6 +51,10 @@ export class Manager {
 		this.total_wars = 0;
 	}
 
+	get sorted_players() {
+		return [...this.players].sort((a, b) => b.average_performance - a.average_performance);
+	}
+
 	get_war(id: number) {
 		return this.wars.find((war) => war.id == id);
 	}

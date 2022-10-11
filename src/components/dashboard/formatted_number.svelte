@@ -11,17 +11,4 @@
 	{format(number,places)}{after}
 </i>
 
-<style global>
-	i {
-		color: white;
-		font-style: normal;
-	}
 
-	.negative {
-		color: hsl(348, 100%, 61%);
-	}
-
-	.positive {
-		color: hsl(141, 71%, 48%);
-	}
-</style>

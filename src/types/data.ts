@@ -61,6 +61,46 @@ export class Player {
 		this.guild = guild;
 		this.name = name;
 	}
+
+	get total_kills() {
+		return this.locals.reduce((sum, local) => sum + local.kills, 0);
+	}
+	get total_deaths() {
+		return this.locals.reduce((sum, local) => sum + local.deaths, 0);
+	}
+
+	get average_kills() {
+		if (this.locals.length == 0) return 0;
+		return this.total_kills / this.locals.length;
+	}
+	get average_deaths() {
+		if (this.locals.length == 0) return 0;
+		return this.total_deaths / this.locals.length;
+	}
+
+	get average_performance() {
+		if (this.locals.length == 0) return 0;
+		const total = this.locals.reduce((sum, local) => sum + local.performance, 0);
+
+		return total / this.locals.length;
+	}
+
+	get average_join_duration() {
+		if (this.locals.length == 0) return 0;
+		const total = this.locals.reduce((sum, local) => sum + local.join_duration_percentage, 0);
+
+		return total / this.locals.length;
+	}
+
+	get participation() {
+		return this.locals.length;
+	}
+
+	get participation_percentage() {
+		if (this.guild.locals.length == 0) return 0;
+
+		return   this.participation / this.guild.locals.length;
+	}
 }
 
 export class Local_Guild {
