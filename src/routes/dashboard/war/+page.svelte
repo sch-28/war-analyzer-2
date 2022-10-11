@@ -65,9 +65,7 @@
 		height: 100px;
 	}
 
-	.list-item-title {
-		color: #fff;
-	}
+	
 
 	.list-item {
 		cursor: pointer;
@@ -79,7 +77,7 @@
 	}
 
 	.list.has-hoverable-list-items .list-item:hover {
-		background-color: rgba(0, 0, 0, 0.1);
+		background-color: var(--hover);
 	}
 
 	.guilds {

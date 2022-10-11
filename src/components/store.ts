@@ -55,6 +55,10 @@ export class Manager {
 		return this.wars.find((war) => war.id == id);
 	}
 
+	get_player(player_name: any) {
+		return this.players.find((p) => p.name === player_name);
+	}
+
 	find_or_create_guild(name: string) {
 		let guild = this.guilds.find((g) => g.name == name);
 

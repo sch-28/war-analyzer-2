@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import FormNumber from '$root/components/dashboard/formatted_number.svelte';
 	import { manager } from '$root/components/store';
-	import { format } from '$root/components/utils';
+	import { format, tag_compare } from '$root/components/utils';
 	import type { Local_Guild, War } from '$root/types/data';
 	import { Chart, registerables, type ChartData } from 'chart.js';
 	import Grid from 'gridjs-svelte';
@@ -129,18 +129,7 @@
 		});
 	} */
 
-	function tag_compare(a: { props: { content: string } }, b: { props: { content: string } }) {
-		const number_a = a.props.content.split('>')[1].split('<')[0];
-		const number_b = b.props.content.split('>')[1].split('<')[0];
-
-		if (number_a > number_b) {
-			return 1;
-		} else if (number_b > number_a) {
-			return -1;
-		} else {
-			return 0;
-		}
-	}
+	
 
 	const columns = [
 		{
@@ -223,7 +212,7 @@
 	</nav>
 	<div class="tile is-ancestor p-3">
 		<div class="tile pt-3 pb-3 is-7">
-			<div class="players" class:show_header={show_grid_header}>
+			<div class="grid_content" class:show_header={show_grid_header}>
 				<Grid
 					on:rowClick={open_player}
 					bind:data={grid_data}
@@ -280,51 +269,7 @@
 {/if}
 
 <style>
-	:global(.show_header th) {
-		background-color: rgb(48 51 58) !important;
-	}
-
-	:global(.gridjs th) {
-		transition: background-color 200ms;
-	}
-
-	:global(.gridjs-wrapper) {
-		border-radius: unset !important;
-	}
-
-	.show_header {
-		position: relative;
-	}
-
-	:global(.show_header::before, .show_header::after) {
-		background-color: rgb(48 51 58) !important;
-		transition: background-color 200ms;
-	}
-
-	.players::after {
-		content: '';
-		width: 100%;
-		left: 0;
-		top: -12px;
-		position: absolute;
-		border-top-left-radius: var(--radius-base);
-		border-top-right-radius: var(--radius-base);
-		height: 12px;
-		transition: background-color 200ms;
-		background-color: transparent;
-	}
-	.players::before {
-		content: '';
-		width: 4px;
-		right: 0;
-		top: 0px;
-		position: absolute;
-		border-top-left-radius: var(--radius-base);
-		border-top-right-radius: var(--radius-base);
-		height: 57px;
-		transition: background-color 200ms;
-		background-color: transparent;
-	}
+	
 
 	.scrollable {
 		overflow-y: scroll;
@@ -339,16 +284,7 @@
 		height: 10%;
 	}
 
-	.list {
-		color: #fff;
-		width: 100%;
-	}
-	.list-item {
-		cursor: pointer;
-	}
-	.list-item.is-active {
-		background-color: var(--hover);
-	}
+	
 	.is-ancestor {
 		gap: 25px;
 		height: 90%;
@@ -359,17 +295,9 @@
 		padding-bottom: 0.75rem;
 	}
 
-	.players {
-		max-height: 100%;
-		min-height: 100%;
-		position: relative;
-	}
 
-	.tile:not(.is-ancestor) {
-		background-color: rgba(255, 255, 255, 0.05);
-		border-radius: var(--radius-base);
-		box-shadow: 0px 2px 16px rgb(10 10 10 / 30%);
-	}
+
+	
 	strong {
 		color: white;
 		font-size: var(--font-18);
@@ -381,10 +309,5 @@
 		align-items: flex-start;
 	}
 
-	:global(.players article, .gridjs-container, .gridjs-wrapper) {
-		height: 100% !important;
-	}
-	:global(tbody tr:first-child td) {
-		border-top: unset !important;
-	}
+	
 </style>

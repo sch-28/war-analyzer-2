@@ -198,3 +198,81 @@ th.gridjs-th{
 .list-item:last-child{
 	border-bottom-left-radius: var(--radius-base);
 }
+.list {
+	color: #fff;
+	width: 100%;
+}
+.list-item {
+	cursor: pointer;
+}
+.list-item.is-active {
+	background-color: var(--hover);
+}
+
+.list-item-title {
+	color: #fff;
+}
+
+.show_header th {
+	background-color: rgb(48 51 58) !important;
+}
+
+.gridjs th {
+	transition: background-color 200ms;
+}
+
+.gridjs-wrapper {
+	border-radius: unset !important;
+}
+
+.show_header {
+	position: relative;
+}
+
+.show_header::before, .show_header::after {
+	background-color: rgb(48 51 58) !important;
+	transition: background-color 200ms;
+}
+
+.grid_content::after {
+	content: '';
+	width: 100%;
+	left: 0;
+	top: -12px;
+	position: absolute;
+	border-top-left-radius: var(--radius-base);
+	border-top-right-radius: var(--radius-base);
+	height: 12px;
+	transition: background-color 200ms;
+	background-color: transparent;
+}
+.grid_content::before {
+	content: '';
+	width: 4px;
+	right: 0;
+	top: 0px;
+	position: absolute;
+	border-top-left-radius: var(--radius-base);
+	border-top-right-radius: var(--radius-base);
+	height: 57px;
+	transition: background-color 200ms;
+	background-color: transparent;
+}
+
+.grid_content {
+	max-height: 100%;
+	min-height: 100%;
+	position: relative;
+}
+	
+.tile:not(.is-ancestor) {
+	background-color: rgba(255, 255, 255, 0.05);
+	border-radius: var(--radius-base);
+	box-shadow: 0px 2px 16px rgb(10 10 10 / 30%);
+}
+.grid_content article, .gridjs-container, .gridjs-wrapper {
+	height: 100% !important;
+}
+tbody tr:first-child td {
+	border-top: unset !important;
+}
