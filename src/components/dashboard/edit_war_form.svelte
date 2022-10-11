@@ -75,7 +75,6 @@
 					<input
 						class="input is-dark "
 						type="date"
-						placeholder="Text input"
 						id="name"
 						required
 						bind:value={new_date}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Log } from '$root/types/data';
 	import { toast } from '@zerodevx/svelte-toast';
+	import dayjs, { Dayjs } from 'dayjs';
 	import { getContext } from 'svelte';
 	import { manager } from '../store';
 
@@ -8,7 +9,7 @@
 
 	let files: FileList;
 	let name: string;
-	let date: Date = new Date();
+	let date: Date | string = dayjs().format('YYYY-MM-DD');
 	let is_nodewar = 1;
 	let form: HTMLFormElement;
 
@@ -49,7 +50,7 @@
 		e.preventDefault();
 
 		if (loaded_logs && loaded_logs.length > 0) {
-			$manager.add_war(name, date, !!is_nodewar, loaded_logs);
+			$manager.add_war(name, date as Date, !!is_nodewar, loaded_logs);
 			$manager = $manager;
 		}
 
@@ -97,13 +98,7 @@
 			<div class="field ">
 				<label class="label " for="date">Date</label>
 				<div class="control">
-					<input
-						class="input is-dark "
-						type="date"
-						id="date"
-						required
-						bind:value={date}
-					/>
+					<input class="input is-dark " type="date" id="date" required bind:value={date} />
 				</div>
 			</div>
 		</div>
