@@ -4,6 +4,7 @@
 	const { close } = getContext('simple-modal') as any;
 	import dayjs from 'dayjs';
 	import { manager } from '$root/components/store';
+	import { goto } from '$app/navigation';
 	let form: HTMLFormElement;
 
 	export let war: War;
@@ -47,7 +48,11 @@
 
 	function delete_war(e: Event) {
 		e.preventDefault();
+		//TODO
+		//$manager.delete_war(war.id);
 		$manager.wars = $manager.wars.filter((w) => w.id != war.id);
+
+		window.location.reload();
 		close();
 	}
 </script>
@@ -72,13 +77,7 @@
 			<div class="field ">
 				<label class="label " for="name">Date</label>
 				<div class="control">
-					<input
-						class="input is-dark "
-						type="date"
-						id="name"
-						required
-						bind:value={new_date}
-					/>
+					<input class="input is-dark " type="date" id="name" required bind:value={new_date} />
 				</div>
 			</div>
 		</div>

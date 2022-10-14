@@ -7,8 +7,47 @@ export class Guild {
 	name: string;
 	players: Player[] = [];
 
+	average_kill_difference: number = 0;
+	kills: number = 0;
+	deaths: number = 0;
+
+	average_kills: number = 0;
+	average_deaths: number = 0;
+
 	constructor(name: string) {
 		this.name = name;
+		this.update();
+	}
+
+	update() {
+		this.kills = this.get_kills();
+		this.deaths = this.get_deaths();
+		this.average_kills = this.get_average_kills();
+		this.average_deaths = this.get_average_deaths();
+
+		this.average_kill_difference = this.get_average_kill_difference();
+	}
+
+	get_kills() {
+		return this.locals.reduce((sum, g) => sum + g.kills, 0);
+	}
+
+	get_deaths() {
+		return this.locals.reduce((sum, g) => sum + g.kills, 0);
+	}
+
+	get_average_kill_difference() {
+		return this.locals.reduce((sum, g) => sum + g.kill_difference, 0);
+	}
+
+	get_average_kills() {
+		if (this.locals.length == 0) return 0;
+		return this.locals.reduce((sum, g) => sum + g.average_kills, 0) / this.locals.length;
+	}
+
+	get_average_deaths() {
+		if (this.locals.length == 0) return 0;
+		return this.locals.reduce((sum, g) => sum + g.average_deaths, 0) / this.locals.length;
 	}
 }
 
@@ -93,7 +132,6 @@ export class Player {
 
 		this.average_duration_percentage = this.get_average_duration_percentage();
 		this.participation_percentage = this.get_participation_percentage();
-	
 	}
 
 	get_total_kills() {
@@ -147,6 +185,8 @@ export class Local_Guild {
 	kills: number = 0;
 	deaths: number = 0;
 
+	kill_difference: number = 0;
+
 	average_kills: number = 0;
 	average_deaths: number = 0;
 	kd: number = 0;
@@ -169,6 +209,8 @@ export class Local_Guild {
 		this.kills = this.kill_events.length;
 		this.deaths = this.death_events.length;
 
+		this.kill_difference = this.kills - this.deaths;
+
 		this.average_kills = this.get_average_kills();
 		this.average_deaths = this.get_average_deaths();
 		this.kd = this.get_kd();
@@ -176,6 +218,7 @@ export class Local_Guild {
 		this.duration = this.get_duration();
 
 		this.sorted_local_players = this.get_sorted_players();
+		this.guild.update();
 	}
 
 	get_kill_events() {

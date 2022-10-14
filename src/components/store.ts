@@ -55,12 +55,23 @@ export class Manager {
 		return [...this.players].sort((a, b) => b.average_performance - a.average_performance);
 	}
 
+	get sorted_guilds() {
+		return [...this.guilds].sort((a, b) => b.average_kill_difference - a.average_kill_difference);
+	}
+
 	get_war(id: number) {
 		return this.wars.find((war) => war.id == id);
 	}
 
 	get_player(player_name: any) {
 		return this.players.find((p) => p.name === player_name);
+	}
+
+	delete_war(id: number) {
+		//TODO
+		console.log(this.wars.length)
+		this.wars = this.wars.filter((w) => w.id != id);
+		console.log(this.wars.length)
 	}
 
 	find_or_create_guild(name: string) {

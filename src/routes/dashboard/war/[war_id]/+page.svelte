@@ -257,7 +257,7 @@
 
 						<div class="list-item-controls">
 							<FormNumber
-								number={local_guild.kill_events.length - local_guild.death_events.length}
+								number={local_guild.kill_difference}
 								neutral={0}
 							/>
 						</div>
