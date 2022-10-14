@@ -41,7 +41,8 @@
 							: 'negative'
 					}">${+format(guild.average_kill_difference)}</i>`
 				),
-				members: +format(guild.average_members, 2)
+				members: +format(guild.average_members, 2),
+				nodewars: guild.locals.length
 			});
 		}
 		grid_data = new_data;
@@ -88,6 +89,13 @@
 			attributes: {
 				title: 'Average Members'
 			}
+		},
+		{
+			name: 'Nodewars',
+			width: '10%',
+			attributes: {
+				title: 'Nodewars joined'
+			}
 		}
 	];
 
@@ -96,6 +104,7 @@
 		goto(`/dashboard/player/${name}`);
 	}
 </script>
+
 <nav class="level ">
 	<!-- Left side -->
 	<div class="level-left">
