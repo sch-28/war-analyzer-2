@@ -53,14 +53,14 @@
 							: 'negative'
 					}">${+format(local_player.performance)}</i>`
 				),
-				joined: html(
+				duration: html(
 					`<i class="${
-						local_player.join_duration_percentage >= 0.75
-							? local_player.join_duration_percentage > 0.75
+						local_player.duration_percentage >= 0.75
+							? local_player.duration_percentage > 0.75
 								? 'positive'
 								: 'neutral'
 							: 'negative'
-					}">${+format(local_player.join_duration_percentage * 100, 0)}%</i>`
+					}">${+format(local_player.duration_percentage * 100, 0)}%</i>`
 				)
 			});
 		}
@@ -104,7 +104,7 @@
 			}
 		},
 		{
-			name: 'joined',
+			name: 'duration',
 			width: '10%',
 			attributes: {
 				title: 'Join Duration Percentage'
@@ -200,7 +200,7 @@
 						neutral={50}
 						after="%"
 						places={0}
-					/> ({player.participation}/{player.guild.locals.length})
+					/> ({player.locals.length}/{player.guild.locals.length})
 				</span>
 			</div>
 			<div class="stat">
@@ -210,7 +210,7 @@
 			<div class="stat">
 				<span>Average Join Duration</span>
 				<FormattedNumber
-					number={player.average_join_duration * 100}
+					number={player.average_duration_percentage * 100}
 					neutral={75}
 					after="%"
 					places={0}
