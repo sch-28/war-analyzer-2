@@ -13,10 +13,10 @@ export class Guild {
 
 	average_kills: number = 0;
 	average_deaths: number = 0;
+	average_members: number = 0;
 
 	constructor(name: string) {
 		this.name = name;
-		this.update();
 	}
 
 	update() {
@@ -26,6 +26,8 @@ export class Guild {
 		this.average_deaths = this.get_average_deaths();
 
 		this.average_kill_difference = this.get_average_kill_difference();
+
+		this.average_members = this.get_average_members();
 	}
 
 	get_kills() {
@@ -49,6 +51,11 @@ export class Guild {
 		if (this.locals.length == 0) return 0;
 		return this.locals.reduce((sum, g) => sum + g.average_deaths, 0) / this.locals.length;
 	}
+
+	get_average_members() {
+		if (this.locals.length == 0) return 0;
+		return this.locals.reduce((sum, g) => sum + g.local_players.length, 0) / this.locals.length;
+	}
 }
 
 export class War {
@@ -66,11 +73,12 @@ export class War {
 		this.logs = logs;
 		this.is_nodewar = is_nodewar;
 		this.id = id;
-		this.update();
 	}
 
 	update() {
+		this.local_guilds.forEach((g) => g.update());
 		this.local_players.forEach((p) => p.update());
+		this.local_guilds.forEach((g) => g.update());
 	}
 
 	get formatted_date() {
@@ -118,7 +126,6 @@ export class Player {
 	constructor(name: string, guild: Guild) {
 		this.guild = guild;
 		this.name = name;
-		this.update();
 	}
 
 	update() {
@@ -199,7 +206,6 @@ export class Local_Guild {
 	constructor(war: War, guild: Guild) {
 		this.war = war;
 		this.guild = guild;
-		this.update();
 	}
 
 	update() {
@@ -252,7 +258,7 @@ export class Local_Guild {
 	}
 
 	get_duration() {
-		const logs = [...this.get_kill_events(), ...this.get_death_events()];
+		const logs = [...this.kill_events, ...this.death_events];
 		if (logs.length < 2) return 0;
 
 		logs.sort((a, b) => (b.time <= a.time ? 1 : -1));
@@ -283,7 +289,6 @@ export class Local_Guild_Player {
 	constructor(local_guild: Local_Guild, player: Player) {
 		this.local_guild = local_guild;
 		this.player = player;
-		this.update();
 	}
 
 	update() {
@@ -299,7 +304,6 @@ export class Local_Guild_Player {
 		this.duration = this.get_join_duration();
 		this.duration_percentage = this.get_join_duration_percentage();
 
-		this.local_guild.update();
 		this.player.update();
 	}
 
@@ -338,7 +342,7 @@ export class Local_Guild_Player {
 	get_join_duration_percentage() {
 		if (this.get_join_duration() == 0) return 0;
 
-		return this.get_join_duration() / this.local_guild.get_duration();
+		return this.duration / this.local_guild.duration;
 	}
 }
 export class Event {

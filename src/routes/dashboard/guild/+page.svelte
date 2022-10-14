@@ -6,7 +6,8 @@
 	import { format, tag_compare } from '$root/components/utils';
 	import type { Guild, Player } from '$root/types/data';
 	import { manager } from '$root/components/store';
-	let grid_data = [];
+	import { onMount } from 'svelte';
+	let grid_data: { name: string; kills: number; deaths: number; kill_diff: VNode<{}> }[] = [];
 	let grid: Grid;
 	let show_grid_header = false;
 
@@ -39,7 +40,8 @@
 								: 'neutral'
 							: 'negative'
 					}">${+format(guild.average_kill_difference)}</i>`
-				)
+				),
+				members: +format(guild.average_members, 2)
 			});
 		}
 		grid_data = new_data;
@@ -57,7 +59,7 @@
 			id: 'kills',
 			width: '10%',
 			attributes: {
-				title: 'Kills'
+				title: 'Average Kills'
 			}
 		},
 		{
@@ -65,11 +67,11 @@
 			id: 'deaths',
 			width: '10%',
 			attributes: {
-				title: 'Deaths'
+				title: 'Average Deaths'
 			}
 		},
 		{
-			name: 'Kill Difference',
+			name: 'Avg. Kill Difference',
 			id: 'kill_diff',
 			width: '10%',
 			attributes: {
@@ -77,6 +79,14 @@
 			},
 			sort: {
 				compare: tag_compare
+			}
+		},
+		{
+			name: 'Avg. Members',
+			id: 'members',
+			width: '10%',
+			attributes: {
+				title: 'Average Members'
 			}
 		}
 	];
@@ -86,8 +96,23 @@
 		goto(`/dashboard/player/${name}`);
 	}
 </script>
+<nav class="level ">
+	<!-- Left side -->
+	<div class="level-left">
+		<div class="top_lvl level-item is-flex is-flex-direction-column is-align-items-flex-start ">
+			<div class="level-item war_title">
+				<strong>Players</strong>
+			</div>
+		</div>
+		<div class="subtitle list-item-description " />
+	</div>
 
-<div class="wrapper">
+	<!-- Right side -->
+	<div class="level-right">
+		<div class="level-item" />
+	</div>
+</nav>
+<div class="wrapper tile">
 	<div class="grid_content" class:show_header={show_grid_header}>
 		<Grid
 			on:rowClick={open_player}
@@ -102,11 +127,19 @@
 </div>
 
 <style>
+	.level {
+		height: 10%;
+	}
 	.wrapper {
-		height: 100%;
+		height: 90%;
+		padding-top: 0.75rem;
+		padding-bottom: 0.75rem;
 	}
 	.grid_content {
-		max-height: 100%;
-		overflow-y: scroll;
+		height: 100%;
+	}
+	strong {
+		color: white;
+		font-size: var(--font-18);
 	}
 </style>

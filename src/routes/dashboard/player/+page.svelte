@@ -6,6 +6,8 @@
 	import { format, tag_compare } from '$root/components/utils';
 	import type { Player } from '$root/types/data';
 	import { manager } from '$root/components/store';
+	import { afterUpdate, onMount } from 'svelte';
+	import { tick } from 'svelte';
 	let grid_data: {
 		name: string;
 		kills: number;
@@ -130,8 +132,24 @@
 	}
 </script>
 
-<div class="wrapper">
-	<div class="grid_content" class:show_header={show_grid_header}>
+<nav class="level ">
+	<!-- Left side -->
+	<div class="level-left">
+		<div class="top_lvl level-item is-flex is-flex-direction-column is-align-items-flex-start ">
+			<div class="level-item war_title">
+				<strong>Players</strong>
+			</div>
+		</div>
+		<div class="subtitle list-item-description " />
+	</div>
+
+	<!-- Right side -->
+	<div class="level-right">
+		<div class="level-item" />
+	</div>
+</nav>
+<div class="wrapper tile">
+	<div class="grid_content " class:show_header={show_grid_header}>
 		<Grid
 			on:rowClick={open_player}
 			bind:data={grid_data}
@@ -145,11 +163,19 @@
 </div>
 
 <style>
+	.level {
+		height: 10%;
+	}
 	.wrapper {
-		height: 100%;
+		height: 90%;
+		padding-top: 0.75rem;
+		padding-bottom: 0.75rem;
 	}
 	.grid_content {
-		max-height: 100%;
-		overflow-y: scroll;
+		height: 100%;
+	}
+	strong {
+		color: white;
+		font-size: var(--font-18);
 	}
 </style>
