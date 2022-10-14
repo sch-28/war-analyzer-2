@@ -6,7 +6,14 @@
 	import { format, tag_compare } from '$root/components/utils';
 	import type { Player } from '$root/types/data';
 	import { manager } from '$root/components/store';
-	let grid_data: { name: string; kills: number; deaths: number; performance: VNode<{}>; joined: VNode<{}>; guild: string; }[] = [];
+	let grid_data: {
+		name: string;
+		kills: number;
+		deaths: number;
+		performance: VNode<{}>;
+		joined: VNode<{}>;
+		guild: string;
+	}[] = [];
 	let grid: Grid;
 	let show_grid_header = false;
 
@@ -30,7 +37,7 @@
 			new_data.push({
 				name: player.name,
 				kills: player.average_kills,
-				deaths: player.average_kills,
+				deaths: player.average_deaths,
 				performance: html(
 					`<i class="${
 						player.average_performance >= 1
@@ -42,12 +49,12 @@
 				),
 				joined: html(
 					`<i class="${
-						player.average_join_duration >= 0.75
-							? player.average_join_duration > 0.75
+						player.average_duration_percentage >= 0.75
+							? player.average_duration_percentage > 0.75
 								? 'positive'
 								: 'neutral'
 							: 'negative'
-					}">${+format(player.average_join_duration * 100, 0)}%</i>`
+					}">${+format(player.average_duration_percentage * 100, 0)}%</i>`
 				),
 				guild: player.guild.name
 			});
@@ -96,7 +103,7 @@
 				compare: tag_compare
 			}
 		},
-        {
+		{
 			name: 'Guild',
 			width: '10%',
 			attributes: {
@@ -114,7 +121,7 @@
 	}
 </script>
 
-<div class="pt-3 pb-3">
+<div class="wrapper">
 	<div class="grid_content" class:show_header={show_grid_header}>
 		<Grid
 			on:rowClick={open_player}
@@ -127,3 +134,13 @@
 		/>
 	</div>
 </div>
+
+<style>
+	.wrapper {
+		height: 100%;
+	}
+	.grid_content {
+		max-height: 100%;
+		overflow-y: scroll;
+	}
+</style>

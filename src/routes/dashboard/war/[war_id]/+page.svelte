@@ -46,7 +46,7 @@
 	function update_grid(war: War) {
 		if (!selected_guild) selected_guild = war.local_guilds[0];
 		const new_data = [];
-		for (let local_player of selected_guild.sorted_players) {
+		for (let local_player of selected_guild.sorted_local_players) {
 			new_data.push({
 				name: local_player.player.name,
 				kills: local_player.kill_events.length,
@@ -62,12 +62,12 @@
 				),
 				joined: html(
 					`<i class="${
-						local_player.join_duration_percentage >= 0.75
-							? local_player.join_duration_percentage > 0.75
+						local_player.duration_percentage >= 0.75
+							? local_player.duration_percentage > 0.75
 								? 'positive'
 								: 'neutral'
 							: 'negative'
-					}">${+format(local_player.join_duration_percentage * 100, 0)}%</i>`
+					}">${+format(local_player.duration_percentage * 100, 0)}%</i>`
 				)
 			});
 		}

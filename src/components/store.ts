@@ -183,6 +183,7 @@ export class Manager {
 			}
 		}
 
+		war.update();
 		return war;
 	}
 }

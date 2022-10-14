@@ -22,12 +22,6 @@
 		}
 	}
 
-	/* $: {
-		files;
-		name;
-		date;
-		is_nodewar;
-	} */
 
 	afterUpdate(() => {
 		form_validity = form && !form.checkValidity();

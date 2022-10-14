@@ -27,6 +27,11 @@ export class War {
 		this.logs = logs;
 		this.is_nodewar = is_nodewar;
 		this.id = id;
+		this.update();
+	}
+
+	update() {
+		this.local_players.forEach((p) => p.update());
 	}
 
 	get formatted_date() {
@@ -57,49 +62,78 @@ export class Player {
 	guild: Guild;
 	events: Event[] = [];
 
+	kills: number = 0;
+	deaths: number = 0;
+
+	average_kills: number = 0;
+	average_deaths: number = 0;
+
+	average_performance: number = 0;
+
+	average_duration_percentage: number = 0;
+	participation_percentage: number = 0;
+
+	kill_events: Event[] = [];
+	death_events: Event[] = [];
+
 	constructor(name: string, guild: Guild) {
 		this.guild = guild;
 		this.name = name;
+		this.update();
 	}
 
-	get total_kills() {
+	update() {
+		this.kills = this.get_total_kills();
+		this.deaths = this.get_total_deaths();
+
+		this.average_kills = this.get_average_kills();
+		this.average_deaths = this.get_average_deaths();
+
+		this.average_performance = this.get_average_performance();
+
+		this.average_duration_percentage = this.get_average_duration_percentage();
+		this.participation_percentage = this.get_participation_percentage();
+	
+	}
+
+	get_total_kills() {
 		return this.locals.reduce((sum, local) => sum + local.kills, 0);
 	}
-	get total_deaths() {
+	get_total_deaths() {
 		return this.locals.reduce((sum, local) => sum + local.deaths, 0);
 	}
 
-	get average_kills() {
+	get_average_kills() {
 		if (this.locals.length == 0) return 0;
-		return this.total_kills / this.locals.length;
+		return this.get_total_kills() / this.locals.length;
 	}
-	get average_deaths() {
+	get_average_deaths() {
 		if (this.locals.length == 0) return 0;
-		return this.total_deaths / this.locals.length;
+		return this.get_total_deaths() / this.locals.length;
 	}
 
-	get average_performance() {
+	get_average_performance() {
 		if (this.locals.length == 0) return 0;
 		const total = this.locals.reduce((sum, local) => sum + local.performance, 0);
 
 		return total / this.locals.length;
 	}
 
-	get average_join_duration() {
+	get_average_duration_percentage() {
 		if (this.locals.length == 0) return 0;
-		const total = this.locals.reduce((sum, local) => sum + local.join_duration_percentage, 0);
+		const total = this.locals.reduce((sum, local) => sum + local.duration_percentage, 0);
 
 		return total / this.locals.length;
 	}
 
-	get participation() {
+	get_participation() {
 		return this.locals.length;
 	}
 
-	get participation_percentage() {
+	get_participation_percentage() {
 		if (this.guild.locals.length == 0) return 0;
 
-		return   this.participation / this.guild.locals.length;
+		return this.get_participation() / this.guild.locals.length;
 	}
 }
 
@@ -107,30 +141,52 @@ export class Local_Guild {
 	guild: Guild;
 	war: War;
 	local_players: Local_Guild_Player[] = [];
+	sorted_local_players: Local_Guild_Player[] = [];
 	local_events: Event[] = [];
+
+	kills: number = 0;
+	deaths: number = 0;
+
+	average_kills: number = 0;
+	average_deaths: number = 0;
+	kd: number = 0;
+
+	duration: number = 0;
+
+	kill_events: Event[] = [];
+	death_events: Event[] = [];
 
 	constructor(war: War, guild: Guild) {
 		this.war = war;
 		this.guild = guild;
+		this.update();
 	}
 
-	get kill_events() {
+	update() {
+		this.kill_events = this.get_kill_events();
+		this.death_events = this.get_death_events();
+
+		this.kills = this.kill_events.length;
+		this.deaths = this.death_events.length;
+
+		this.average_kills = this.get_average_kills();
+		this.average_deaths = this.get_average_deaths();
+		this.kd = this.get_kd();
+
+		this.duration = this.get_duration();
+
+		this.sorted_local_players = this.get_sorted_players();
+	}
+
+	get_kill_events() {
 		return this.local_events.filter((l) => l.normalized_kill(this.guild));
 	}
 
-	get death_events() {
+	get_death_events() {
 		return this.local_events.filter((l) => !l.normalized_kill(this.guild));
 	}
 
-	get kills() {
-		return this.kill_events.length;
-	}
-
-	get deaths() {
-		return this.death_events.length;
-	}
-
-	get kd() {
+	get_kd() {
 		if (this.deaths == 0) {
 			return this.kills;
 		}
@@ -138,17 +194,22 @@ export class Local_Guild {
 		return this.kills / this.deaths;
 	}
 
-	get average_kills() {
+	get_average_kills() {
 		if (this.local_players.length == 0) return 0;
 		return this.kills / this.local_players.length;
 	}
 
-	get sorted_players() {
+	get_average_deaths() {
+		if (this.local_players.length == 0) return 0;
+		return this.deaths / this.local_players.length;
+	}
+
+	get_sorted_players() {
 		return [...this.local_players].sort((a, b) => b.kills - a.kills);
 	}
 
-	get duration() {
-		const logs = [...this.kill_events, ...this.death_events];
+	get_duration() {
+		const logs = [...this.get_kill_events(), ...this.get_death_events()];
 		if (logs.length < 2) return 0;
 
 		logs.sort((a, b) => (b.time <= a.time ? 1 : -1));
@@ -164,28 +225,50 @@ export class Local_Guild_Player {
 	local_guild: Local_Guild;
 	local_events: Event[] = [];
 
+	kills: number = 0;
+	deaths: number = 0;
+
+	kd: number = 0;
+	performance: number = 0;
+
+	duration: number = 0;
+	duration_percentage: number = 0;
+
+	kill_events: Event[] = [];
+	death_events: Event[] = [];
+
 	constructor(local_guild: Local_Guild, player: Player) {
 		this.local_guild = local_guild;
 		this.player = player;
+		this.update();
 	}
 
-	get kill_events() {
+	update() {
+		this.kill_events = this.get_kill_events();
+		this.death_events = this.get_death_events();
+
+		this.kills = this.kill_events.length;
+		this.deaths = this.death_events.length;
+
+		this.kd = this.get_kd();
+		this.performance = this.get_performance();
+
+		this.duration = this.get_join_duration();
+		this.duration_percentage = this.get_join_duration_percentage();
+
+		this.local_guild.update();
+		this.player.update();
+	}
+
+	get_kill_events() {
 		return this.local_events.filter((l) => l.normalized_kill(this.player.guild));
 	}
 
-	get death_events() {
+	get_death_events() {
 		return this.local_events.filter((l) => !l.normalized_kill(this.player.guild));
 	}
 
-	get kills() {
-		return this.kill_events.length;
-	}
-
-	get deaths() {
-		return this.death_events.length;
-	}
-
-	get kd() {
+	get_kd() {
 		if (this.deaths == 0) {
 			return this.kills;
 		}
@@ -193,12 +276,12 @@ export class Local_Guild_Player {
 		return this.kills / this.deaths;
 	}
 
-	get performance() {
+	get_performance() {
 		if (this.local_guild.average_kills == 0) return this.kills;
 		return this.kills / this.local_guild.average_kills;
 	}
 
-	get join_duration() {
+	get_join_duration() {
 		const logs = [...this.kill_events, ...this.death_events];
 		if (logs.length < 2) return 0;
 
@@ -209,10 +292,10 @@ export class Local_Guild_Player {
 		return end.diff(start, 'minutes');
 	}
 
-	get join_duration_percentage() {
-		if (this.join_duration == 0) return 0;
+	get_join_duration_percentage() {
+		if (this.get_join_duration() == 0) return 0;
 
-		return this.join_duration / this.local_guild.duration;
+		return this.get_join_duration() / this.local_guild.get_duration();
 	}
 }
 export class Event {
