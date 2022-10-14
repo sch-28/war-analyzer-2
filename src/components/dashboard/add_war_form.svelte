@@ -2,13 +2,13 @@
 	import { Log } from '$root/types/data';
 	import { toast } from '@zerodevx/svelte-toast';
 	import dayjs, { Dayjs } from 'dayjs';
-	import { getContext } from 'svelte';
+	import { afterUpdate, getContext } from 'svelte';
 	import { manager } from '../store';
 
 	const { close } = getContext('simple-modal') as any;
 
 	let files: FileList;
-	let name: string;
+	let name: string = '';
 	let date: Date | string = dayjs().format('YYYY-MM-DD');
 	let is_nodewar = 1;
 	let form: HTMLFormElement;
@@ -22,19 +22,25 @@
 		}
 	}
 
-	$: {
+	/* $: {
 		files;
 		name;
 		date;
 		is_nodewar;
+	} */
 
+	afterUpdate(() => {
 		form_validity = form && !form.checkValidity();
-	}
+	});
 
 	async function check_file(file: File) {
 		try {
 			const result = await load_data(file);
 			loaded_logs = result;
+			if (name.length == 0) {
+				name = file.name.split('.')[0];
+				/* form_validity = form && !form.checkValidity(); */
+			}
 		} catch (e) {
 			console.error(e);
 			toast.push('Invalid File', {
