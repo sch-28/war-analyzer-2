@@ -11,7 +11,8 @@
 		kills: number;
 		deaths: number;
 		performance: VNode<{}>;
-		joined: VNode<{}>;
+		duration: VNode<{}>;
+		joined: number;
 		guild: string;
 	}[] = [];
 	let grid: Grid;
@@ -47,7 +48,7 @@
 							: 'negative'
 					}">${+format(player.average_performance)}</i>`
 				),
-				joined: html(
+				duration: html(
 					`<i class="${
 						player.average_duration_percentage >= 0.75
 							? player.average_duration_percentage > 0.75
@@ -56,6 +57,7 @@
 							: 'negative'
 					}">${+format(player.average_duration_percentage * 100, 0)}%</i>`
 				),
+				joined: player.locals.length,
 				guild: player.guild.name
 			});
 		}
@@ -94,14 +96,21 @@
 			}
 		},
 		{
-			name: 'joined',
+			name: 'duration',
 			width: '10%',
 			attributes: {
-				title: 'Join Duration Percentage'
+				title: 'Average Join Duration Percentage'
 			},
 			sort: {
 				compare: tag_compare
 			}
+		},
+		{
+			name: 'joined',
+			attributes: {
+				title: 'Number of Nodewars joined'
+			},
+			width: '10%'
 		},
 		{
 			name: 'Guild',
