@@ -20,8 +20,8 @@
 					href="/dashboard/war">Wars</a
 				>
 			</li>
-			<li><a class:is-active={is_url('/dashboard/player')} href="/dashboard/player">Players</a></li>
-			<li><a class:is-active={is_url('/dashboard/guild')} href="/dashboard/guild">Guilds</a></li>
+			<li><a class:is-active={is_url('/dashboard/player') || is_suburl('/dashboard/player/')} href="/dashboard/player">Players</a></li>
+			<li><a class:is-active={is_url('/dashboard/guild') || is_suburl('/dashboard/guild/')} href="/dashboard/guild">Guilds</a></li>
 		</ul>
 		<!-- <p class="menu-label">Nodewar</p>
 		<ul class="menu-list">

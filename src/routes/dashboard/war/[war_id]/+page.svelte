@@ -280,9 +280,6 @@
 		height: fit-content;
 	}
 
-	.level {
-		height: 10%;
-	}
 
 	
 	.is-ancestor {

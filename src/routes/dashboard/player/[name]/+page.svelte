@@ -229,6 +229,7 @@
 {/if}
 
 <style>
+
 	strong {
 		color: white;
 		font-size: var(--font-18);

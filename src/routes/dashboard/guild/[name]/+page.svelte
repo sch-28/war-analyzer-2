@@ -4,8 +4,9 @@
 	import { goto } from '$app/navigation';
 	import type { VNode } from 'preact';
 	import { format, tag_compare } from '$root/components/utils';
-	import type { Player } from '$root/types/data';
+	import type { Guild, Player } from '$root/types/data';
 	import { manager } from '$root/components/store';
+	import { page } from '$app/stores';
 
 	let grid_data: {
 		name: string;
@@ -14,14 +15,17 @@
 		performance: VNode<{}>;
 		duration: VNode<{}>;
 		joined: number;
-		guild: string;
 	}[] = [];
 	let grid: Grid;
 	let show_grid_header = false;
 
+	let guild: Guild | undefined;
+
 	$: {
-		if ($manager && $manager.players.length > 0) {
-			update_grid($manager.sorted_players);
+		const guild_name = $page.params.name;
+		if (guild_name) {
+			guild = $manager.get_guild(guild_name);
+			if (guild) update_grid(guild);
 		}
 	}
 
@@ -33,9 +37,9 @@
 			})
 	);
 
-	function update_grid(players: Player[]) {
+	function update_grid(guild: Guild) {
 		const new_data = [];
-		for (let player of players) {
+		for (let player of guild.sorted_player) {
 			new_data.push({
 				name: player.name,
 				kills: +format(player.average_kills),
@@ -58,8 +62,7 @@
 							: 'negative'
 					}">${+format(player.average_duration_percentage * 100, 0)}%</i>`
 				),
-				joined: player.locals.length,
-				guild: player.guild.name
+				joined: player.locals.length
 			});
 		}
 		grid_data = new_data;
@@ -67,7 +70,7 @@
 	const columns = [
 		{
 			name: 'Name',
-			id:"name",
+			id: 'name',
 			width: '15%',
 			attributes: {
 				title: 'Name'
@@ -116,16 +119,6 @@
 				title: 'Number of Nodewars joined'
 			},
 			width: '10%'
-		},
-		{
-			name: 'Guild',
-			width: '10%',
-			attributes: {
-				title: 'Player Guild'
-			},
-			sort: {
-				compare: tag_compare
-			}
 		}
 	];
 
@@ -135,47 +128,89 @@
 	}
 </script>
 
-<nav class="level ">
-	<!-- Left side -->
-	<div class="level-left">
-		<div class="top_lvl level-item is-flex is-flex-direction-column is-align-items-flex-start ">
-			<div class="level-item war_title">
-				<strong>Players</strong>
+{#if guild}
+	<nav class="level ">
+		<!-- Left side -->
+		<div class="level-left">
+			<div class="top_lvl level-item is-flex is-flex-direction-column is-align-items-flex-start ">
+				<div class="level-item">
+					<a class=" level-item icon is-small has-text-white" href="/dashboard/guild">
+						<i class="fas fa-arrow-left " />
+					</a>
+					<div class="level-item war_title">
+						<strong>{guild.name}</strong>
+					</div>
+				</div>
+			</div>
+			<div class="subtitle list-item-description " />
+		</div>
+
+		<!-- Right side -->
+		<div class="level-right">
+			<div class="level-item" />
+		</div>
+	</nav>
+
+	<div class="tile is-ancestor p-3">
+		<div class="tile pt-3 pb-3 is-7 ">
+			<div class="grid_content" class:show_header={show_grid_header}>
+				<Grid
+					on:rowClick={open_player}
+					bind:data={grid_data}
+					sort
+					fixedHeader
+					bind:this={grid}
+					style={{ th: { 'background-color': 'transparent' } }}
+					{columns}
+				/>
 			</div>
 		</div>
-		<div class="subtitle list-item-description " />
+		<div class="tile stats">
+			<div class="stat">
+				<span>Average Kills</span>
+				<span>{format(guild.average_kills)}</span>
+			</div>
+			<div class="stat">
+				<span>Average Deaths</span>
+				<span>{format(guild.average_deaths)}</span>
+			</div>
+			<div class="stat">
+				<span>Nodewars</span>
+				<span>{guild.locals.length}</span>
+			</div>
+			<div class="stat">
+				<span>Average Kill Difference</span>
+				<span>{format(guild.average_kill_difference)}</span>
+			</div>
+			<div class="stat">
+				<span>Average Members</span>
+				<span>{format(guild.average_members)}</span>
+			</div>
+			<div class="stat">
+				<span>Total Members</span>
+				<span>{guild.players.length}</span>
+			</div>
+		</div>
 	</div>
-
-	<!-- Right side -->
-	<div class="level-right">
-		<div class="level-item" />
-	</div>
-</nav>
-<div class="wrapper tile">
-	<div class="grid_content " class:show_header={show_grid_header}>
-		<Grid
-			on:rowClick={open_player}
-			bind:data={grid_data}
-			sort
-			fixedHeader
-			bind:this={grid}
-			style={{ th: { 'background-color': 'transparent' } }}
-			{columns}
-		/>
-	</div>
-</div>
+{/if}
 
 <style>
-	.wrapper {
-		height: 90%;
-		padding-top: 0.75rem;
-		padding-bottom: 0.75rem;
-	}
-	.grid_content {
-		height: 100%;
-	}
 	strong {
 		color: white;
 		font-size: var(--font-18);
+	}
+	.is-ancestor {
+		gap: 25px;
+		height: 90%;
+	}
+	.stat {
+		display: flex;
+		flex-direction: column;
+	}
+	.stats {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 26px 24px;
 	}
 </style>

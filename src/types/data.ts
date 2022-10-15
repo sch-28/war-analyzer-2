@@ -56,6 +56,10 @@ export class Guild {
 		if (this.locals.length == 0) return 0;
 		return this.locals.reduce((sum, g) => sum + g.local_players.length, 0) / this.locals.length;
 	}
+
+	get sorted_player() {
+		return [...this.players].sort((a, b) => b.average_performance - a.average_performance);
+	}
 }
 
 export class War {

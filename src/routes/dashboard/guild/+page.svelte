@@ -42,6 +42,7 @@
 					}">${+format(guild.average_kill_difference)}</i>`
 				),
 				members: +format(guild.average_members, 2),
+				total_members: guild.players.length,
 				nodewars: guild.locals.length
 			});
 		}
@@ -91,6 +92,14 @@
 			}
 		},
 		{
+			name: 'Members',
+			id: 'total_members',
+			width: '10%',
+			attributes: {
+				title: 'Total Member Count'
+			}
+		},
+		{
 			name: 'Nodewars',
 			width: '10%',
 			attributes: {
@@ -101,7 +110,7 @@
 
 	function open_player(event: CustomEvent) {
 		const name = event.detail[1]._cells[0].data;
-		goto(`/dashboard/player/${name}`);
+		goto(`/dashboard/guild/${name}`);
 	}
 </script>
 
@@ -110,7 +119,7 @@
 	<div class="level-left">
 		<div class="top_lvl level-item is-flex is-flex-direction-column is-align-items-flex-start ">
 			<div class="level-item war_title">
-				<strong>Players</strong>
+				<strong>Guilds</strong>
 			</div>
 		</div>
 		<div class="subtitle list-item-description " />
@@ -136,9 +145,7 @@
 </div>
 
 <style>
-	.level {
-		height: 10%;
-	}
+	
 	.wrapper {
 		height: 90%;
 		padding-top: 0.75rem;
