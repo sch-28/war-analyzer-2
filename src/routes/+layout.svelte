@@ -4,6 +4,8 @@
 
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
+	import type { User } from '$root/types/user';
+	import type { ServerData } from '@sveltejs/kit/types/internal';
 
 	onMount(() => {
 		const app = new SvelteToast({
