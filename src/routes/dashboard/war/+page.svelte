@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AddWarButton from '$root/components/dashboard/add_war_button.svelte';
 	import EditWarButton from '$root/components/dashboard/edit_war_button.svelte';
 	import { manager } from '$root/components/store';
 	import Modal from 'svelte-simple-modal';
@@ -14,7 +15,11 @@
 
 	<!-- Right side -->
 	<div class="level-right">
-		<p class="level-item" />
+		<p class="level-item">
+			<Modal closeButton={false} styleWindow={{ background: 'var(--color-bg-primary)' }}>
+				<AddWarButton />
+			</Modal>
+		</p>
 	</div>
 </nav>
 <div class="wars">
@@ -65,8 +70,6 @@
 		height: 100px;
 	}
 
-	
-
 	.list-item {
 		cursor: pointer;
 		height: 125px;
@@ -101,5 +104,4 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	
 </style>

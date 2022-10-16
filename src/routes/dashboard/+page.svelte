@@ -14,11 +14,7 @@
 
 		<!-- Right side -->
 		<div class="level-right">
-			<p class="level-item">
-				<Modal closeButton={false} styleWindow={{ background: 'var(--color-bg-primary)' }}>
-					<AddWarButton />
-				</Modal>
-			</p>
+			
 		</div>
 	</nav>
 </div>
