@@ -43,7 +43,7 @@
 <style>
 	.wrapper {
 		display: flex;
-		height: calc(100vh - 56px);
+		height: calc(100vh - 72px);
 		padding: 20px 0;
 		gap: 25px;
 	}

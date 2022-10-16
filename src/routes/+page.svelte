@@ -33,7 +33,7 @@
 		align-items: center;
 		max-width: 430px;
 		text-align: center;
-		height: calc(100vh - 56px);
+		height: calc(100vh - 72px);
 		padding-bottom: 200px;
 	}
 	.landing h1 {
@@ -42,6 +42,10 @@
 
 	.landing span {
 		font-weight: 100;
+	}
+
+	a.button.is-primary:hover {
+		color: white !important;
 	}
 
 	.sub {
