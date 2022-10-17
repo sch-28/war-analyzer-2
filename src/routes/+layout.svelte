@@ -5,7 +5,8 @@
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
 	import type { User } from '$root/types/user';
-	import type { ServerData } from '@sveltejs/kit/types/internal';
+
+	export let data: User | undefined;
 
 	onMount(() => {
 		const app = new SvelteToast({
@@ -19,7 +20,7 @@
 </script>
 
 <div class="body">
-	<Header />
+	<Header user={data} />
 	<slot />
 	<!-- <img src="/images/background.jpg" alt="test" class="background" /> -->
 </div>

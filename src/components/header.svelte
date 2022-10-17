@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { User } from '$root/types/user';
 
 	$: is_url = (url: string) => {
 		return $page.url.pathname === url;
 	};
+
+	export let user: User | undefined;
 
 	let expand_menu = false;
 </script>
@@ -14,7 +17,9 @@
 			<img src="/images/logo.svg" width="32" height="32" alt="logo" />
 		</a>
 
-		<a data-sveltekit-prefetch href="/"
+		<a
+			data-sveltekit-prefetch
+			href="/"
 			class:is-active={expand_menu}
 			on:click={() => (expand_menu = !expand_menu)}
 			role="button"
@@ -36,9 +41,15 @@
 			<a class="navbar-item" href={'javascript:;'}> Documentation </a>
 			<div class="navbar-item">
 				<div class="buttons">
-					<a class="button" href={'javascript:;'}>
-						<strong>Log in</strong>
-					</a>
+					{#if !user || Object.keys(user).length == 0}
+						<a class="button" href="/discord/auth">
+							<strong>Log in</strong>
+						</a>
+					{:else}
+						<a class="button" href="/discord/auth">
+							<strong>{user.username}</strong>
+						</a>
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -80,6 +91,10 @@
 	}
 
 	.navbar-menu .button {
+		color: black;
+	}
+
+	.buttons .button:hover {
 		color: black;
 	}
 </style>

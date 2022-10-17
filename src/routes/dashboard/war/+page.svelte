@@ -93,6 +93,10 @@
 		gap: 2px;
 	}
 
+	.guilds a:hover {
+		color: #3d7de5a6;
+	}
+
 	.kd {
 		margin: 0 auto;
 		color: #fff;
