@@ -97,4 +97,8 @@
 	.buttons .button:hover {
 		color: black;
 	}
+
+	a.navbar-item:hover{
+		background-color: var(--hover);
+	}
 </style>
