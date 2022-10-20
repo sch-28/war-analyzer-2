@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { User } from '$root/types/user';
+	import { onMount } from 'svelte';
 
 	$: is_url = (url: string) => {
 		return $page.url.pathname === url;
@@ -9,6 +10,10 @@
 	export let user: User | undefined;
 
 	let expand_menu = false;
+
+	onMount(() => {
+		window.onresize = () => (expand_menu = false);
+	});
 </script>
 
 <nav class="navbar is-dark" aria-label="main navigation">
@@ -19,7 +24,7 @@
 
 		<a
 			data-sveltekit-prefetch
-			href="/"
+			href={''}
 			class:is-active={expand_menu}
 			on:click={() => (expand_menu = !expand_menu)}
 			role="button"
@@ -37,8 +42,17 @@
 		<div class="navbar-start" />
 
 		<div class="navbar-end">
-			<a class="navbar-item" data-sveltekit-prefetch href="/dashboard"> Dashboard </a>
-			<a class="navbar-item" href={'javascript:;'}> Documentation </a>
+			<a
+				class="navbar-item"
+				data-sveltekit-prefetch
+				href="/dashboard"
+				on:click={() => (expand_menu = false)}
+			>
+				Dashboard
+			</a>
+			<a class="navbar-item" href={'javascript:;'} on:click={() => (expand_menu = false)}>
+				Documentation
+			</a>
 			<div class="navbar-item">
 				<div class="buttons">
 					{#if !user || Object.keys(user).length == 0}
@@ -56,22 +70,7 @@
 	</div>
 </nav>
 
-<!-- <header>
-	<ul>
-		<li class:active={is_url('/')}>
-			<a sveltekit:prefetch href="/">
-				<img src="" alt="logo" />
-			</a>
-		</li>
-		<li class:active={is_url('/Test')} style="margin-left: auto;">
-			<a sveltekit:prefetch href="/properties">Test</a>
-		</li>
-	</ul>
-</header> -->
 <style>
-	/* li.active{
-        background-color: gray;
-    } */
 	img {
 		color: white;
 	}
@@ -82,8 +81,11 @@
 	}
 
 	.navbar-menu.is-active {
-		background-color: rgba(0, 0, 0, 0);
+		background-color: var(--color-bg-secondary);
 		box-shadow: 0px 2px 16px rgb(10 10 10 / 30%);
+	}
+	.navbar-menu {
+		background-color: rgba(0, 0, 0, 0);
 	}
 
 	.navbar-menu a {
@@ -98,7 +100,7 @@
 		color: black;
 	}
 
-	a.navbar-item:hover{
+	a.navbar-item:hover {
 		background-color: var(--hover);
 	}
 </style>
