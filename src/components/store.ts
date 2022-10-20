@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { Event, Guild, Local_Guild, Local_Guild_Player, Log, Player, War } from '$root/types/data';
+import dayjs from 'dayjs';
 import type { Writable } from 'svelte/store';
 
 import { writable, get } from 'svelte/store';
@@ -38,17 +39,22 @@ const storage = (key: string, initValue: Manager): Writable<Manager> => {
 
 export default storage;
 
+export interface Manager_JSON {
+	name: string;
+	date: string;
+	is_nodewar: boolean;
+	logs: Log[];
+}
+
 export class Manager {
 	wars: War[];
 	players: Player[];
 	guilds: Guild[];
-	total_wars: number;
 
 	constructor() {
 		this.wars = [];
 		this.players = [];
 		this.guilds = [];
-		this.total_wars = 0;
 	}
 
 	get sorted_players() {
@@ -59,7 +65,7 @@ export class Manager {
 		return [...this.guilds].sort((a, b) => b.average_kill_difference - a.average_kill_difference);
 	}
 
-	get_war(id: number) {
+	get_war(id: string) {
 		return this.wars.find((war) => war.id == id);
 	}
 
@@ -71,12 +77,12 @@ export class Manager {
 		return this.guilds.find((g) => g.name === guild_name);
 	}
 
-	delete_war(id: number) {
+	/* delete_war(id: number) {
 		//TODO
 		console.log(this.wars.length);
 		this.wars = this.wars.filter((w) => w.id != id);
 		console.log(this.wars.length);
-	}
+	} */
 
 	find_or_create_guild(name: string) {
 		let guild = this.guilds.find((g) => g.name == name);
@@ -101,18 +107,14 @@ export class Manager {
 		return player;
 	}
 
-	static from_json(json: {
-		wars: { id: number; name: string; date: string; is_nodewar: boolean; logs: Log[] }[];
-	}) {
+	static from_json(json: { wars: Manager_JSON[] }) {
 		const manager = new Manager();
-		let highest_id = 0;
 		for (let war of json.wars) {
-			war.logs = war.logs.map((l) => new Log(l.player_one, l.player_two, l.kill, l.guild, l.time));
-			const w = manager.add_war(war.name, new Date(war.date), war.is_nodewar, war.logs);
-			w.id = war.id;
-			if (war.id > highest_id) highest_id = war.id;
+			war.logs = war.logs.map(
+				(l) => new Log(l.player_one, l.player_two, l.is_kill, l.guild, l.time)
+			);
+			const w = manager.add_war(war.name, war.date, war.is_nodewar, war.logs);
 		}
-		manager.total_wars = highest_id + 1;
 		return manager;
 	}
 
@@ -120,7 +122,6 @@ export class Manager {
 		const json_wars = [];
 		for (let war of this.wars) {
 			json_wars.push({
-				id: war.id,
 				name: war.name,
 				date: war.date,
 				is_nodewar: war.is_nodewar,
@@ -140,9 +141,10 @@ export class Manager {
 		return JSON.stringify({ wars: json_wars });
 	}
 
-	add_war(name: string, date: Date, is_nodewar: boolean, logs: Log[]) {
-		// const war = new War(name, date, logs);
-		//
+	add_war(name: string, date: string, is_nodewar: boolean, logs: Log[]) {
+		if (this.wars.find((war) => war.id == date + name)) {
+			return false;
+		}
 
 		const events: Event[] = [];
 		const guilds = new Set<Guild>();
@@ -159,16 +161,15 @@ export class Manager {
 
 			// players.push(player_one, player_two);
 			players.add(player_one).add(player_two);
-			const event = new Event(player_one, player_two, log.kill, log.parsed_time);
+			const event = new Event(player_one, player_two, log.is_kill, dayjs(log.time, 'HH:mm:ss'));
 			player_one.events.push(event);
 			player_two.events.push(event);
 
 			events.push(event);
 		}
 
-		const war = new War(this.total_wars, name, new Date(date), is_nodewar, events);
+		const war = new War(name, date, is_nodewar, events);
 		this.wars.push(war);
-		this.total_wars++;
 
 		for (let guild of guilds) {
 			// create local guild that only contains information of the current war
@@ -200,6 +201,13 @@ export class Manager {
 
 		war.update();
 		return war;
+	}
+
+	is_valid_war(date: string, name: string) {
+		if (this.wars.find((war) => war.id == date + name)) {
+			return false;
+		}
+		return true;
 	}
 }
 

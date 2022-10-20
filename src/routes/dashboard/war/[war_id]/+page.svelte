@@ -33,7 +33,7 @@
 	$: {
 		const war_id = $page.params.war_id;
 		if (war_id) {
-			war = $manager.get_war(+war_id);
+			war = $manager.get_war(war_id);
 			if (war) update_grid(war);
 		}
 	}

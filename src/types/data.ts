@@ -63,20 +63,18 @@ export class Guild {
 }
 
 export class War {
-	id: number;
 	local_guilds: Local_Guild[] = [];
 	local_players: Local_Guild_Player[] = [];
-	date: Date;
+	date: string;
 	name: string;
 	logs: Event[];
 	is_nodewar: boolean;
 
-	constructor(id: number, name: string, date: Date, is_nodewar: boolean, logs: Event[]) {
+	constructor(name: string, date: string, is_nodewar: boolean, logs: Event[]) {
 		this.date = date;
 		this.name = name;
 		this.logs = logs;
 		this.is_nodewar = is_nodewar;
-		this.id = id;
 	}
 
 	update() {
@@ -86,7 +84,7 @@ export class War {
 	}
 
 	get formatted_date() {
-		return this.date.toLocaleDateString();
+		return new Date(this.date).toLocaleDateString();
 	}
 
 	get enemy_local_guilds() {
@@ -104,6 +102,10 @@ export class War {
 	get sorted_guilds() {
 		const guilds = [...this.local_guilds].sort((a, b) => b.kills - b.deaths - (a.kills - a.deaths));
 		return guilds;
+	}
+
+	get id() {
+		return this.date + this.name;
 	}
 }
 
@@ -377,14 +379,14 @@ export class Event {
 export class Log {
 	player_one: string;
 	player_two: string;
-	kill: boolean;
+	is_kill: boolean;
 	guild: string;
 	time: string;
 
 	constructor(p1: string, p2: string, kill: boolean, guild: string, time: string) {
 		this.player_one = p1;
 		this.player_two = p2;
-		this.kill = kill;
+		this.is_kill = kill;
 		this.guild = guild;
 		if (this.guild == '-1') {
 			this.guild = 'No Guild';
@@ -401,9 +403,5 @@ export class Log {
 		}
 
 		throw new Error(`Invalid Log: ${log}`);
-	}
-
-	get parsed_time() {
-		return dayjs(this.time, 'HH:mm:ss');
 	}
 }

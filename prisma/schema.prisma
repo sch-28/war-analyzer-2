@@ -10,39 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            String @id @unique
+  username      String
+  discriminator String
+  wars          War[]
+}
+
 model War {
-  id         Int      @id @default(autoincrement())
-  date       DateTime
+  id         Int     @id @default(autoincrement())
+  date       String
   is_nodewar Boolean
-  guilds     Guild[]
-  players    Player[]
+  user       User    @relation(fields: [userId], references: [id])
+  userId     String
+  name       String
   logs       Log[]
 }
 
-model Guild {
-  id     Int      @id @default(autoincrement())
-  name   String
-  wars   War[]
-  Player Player[]
-}
-
-model Player {
-  id       Int    @id @default(autoincrement())
-  name     String
-  guild    Guild  @relation(fields: [guild_id], references: [id])
-  guild_id Int
-  kills    Log[]  @relation("killer")
-  deaths   Log[]  @relation("victim")
-  wars     War[]
-}
-
 model Log {
-  id        Int       @id @default(autoincrement())
-  time      DateTime?
-  killer    Player    @relation("killer", fields: [killer_id], references: [id])
-  killer_id Int
-  victim    Player    @relation("victim", fields: [victim_id], references: [id])
-  victim_id Int
-  war       War       @relation(fields: [war_id], references: [id])
-  war_id    Int
+  id         Int     @id @default(autoincrement())
+  time       String
+  player_one String
+  player_two String
+  guild      String
+  is_kill    Boolean
+  war        War     @relation(fields: [war_id], references: [id])
+  war_id     Int
 }

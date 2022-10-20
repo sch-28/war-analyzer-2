@@ -1,5 +1,32 @@
 import { HOST, DISCORD_API_URL } from '$env/static/private';
 import type { Cookies, Handle } from '@sveltejs/kit';
+import { prisma } from './components/prisma';
+import type { User } from './types/user';
+
+async function set_session(locals: App.Locals, user: User) {
+	const prisma_user = await prisma.user.upsert({
+		where: { id: user.id },
+		update: {},
+		create: { id: user.id, discriminator: user.discriminator, username: user.username },
+		include: {
+			wars: {
+				include: {
+					logs: true
+				}
+			}
+		}
+	});
+
+	locals.user = {
+		avatar: user.avatar,
+		discriminator: user.discriminator,
+		id: user.id,
+		username: user.username,
+		wars: prisma_user.wars.map((war) => {
+			return { name: war.name, date: war.date, is_nodewar: war.is_nodewar, logs: war.logs };
+		})
+	};
+}
 
 export const handle: Handle = async (request) => {
 	const cookies = request.event.cookies;
@@ -24,7 +51,7 @@ export const handle: Handle = async (request) => {
 			const response = await discord_request.json();
 
 			if (response.id) {
-				request.event.locals.user = response;
+				set_session(request.event.locals, response);
 			}
 		}
 	} else if (access_token) {
@@ -34,7 +61,7 @@ export const handle: Handle = async (request) => {
 
 		const response = await discord_request.json();
 		if (response.id) {
-			request.event.locals.user = response;
+			set_session(request.event.locals, response);
 		}
 	}
 
