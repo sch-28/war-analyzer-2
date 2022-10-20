@@ -9,11 +9,13 @@
 
 	let files: FileList;
 	let name: string = '';
-	let date: Date | string = dayjs().format('YYYY-MM-DD');
+	let date: string = dayjs().format('YYYY-MM-DD');
 	let is_nodewar = 1;
 	let form: HTMLFormElement;
 
 	let form_validity = false;
+
+	let error = '';
 
 	let loaded_logs: Log[] = [];
 	$: {
@@ -22,9 +24,17 @@
 		}
 	}
 
-
 	afterUpdate(() => {
-		form_validity = form && !form.checkValidity();
+		const valid_war = $manager.is_valid_war(date, name);
+		form_validity = valid_war && form && form.checkValidity();
+
+		if (!valid_war) {
+			error = 'War already exists';
+		} else if (valid_war && !form_validity) {
+			error = 'Fill out all inputs';
+		} else {
+			error = '';
+		}
 	});
 
 	async function check_file(file: File) {
@@ -50,11 +60,19 @@
 		e.preventDefault();
 
 		if (loaded_logs && loaded_logs.length > 0) {
-			$manager.add_war(name, date as Date, !!is_nodewar, loaded_logs);
-			$manager = $manager;
+			const result = $manager.add_war(name, date, !!is_nodewar, loaded_logs);
+			if (!result) {
+				toast.push('Duplicate War', {
+					theme: {
+						'--toastBackground': '#F56565',
+						'--toastBarBackground': '#C53030'
+					}
+				});
+			} else {
+				$manager = $manager;
+				close();
+			}
 		}
-
-		close();
 	}
 
 	async function load_data(file: File) {
@@ -129,8 +147,11 @@
 			</label>
 		</div>
 
-		<div class="control">
-			<button class="button is-link" on:click={add_war} disabled={form_validity}>Add</button>
+		<div class="control submit_control">
+			<button class="button is-link" on:click={add_war} disabled={!form_validity}>Add</button>
+			{#if error.length > 0}
+				<span>{error}</span>
+			{/if}
 		</div>
 	</form>
 </div>
@@ -160,7 +181,15 @@
 		background-color: var(--color-bg-secondary);
 	}
 
-	button {
+	.submit_control {
 		margin-top: 12px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		text-align: center;
+	}
+
+	.submit_control span {
+		color: var(--color-danger);
 	}
 </style>

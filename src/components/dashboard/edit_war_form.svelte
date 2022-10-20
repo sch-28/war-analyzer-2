@@ -13,6 +13,8 @@
 	let new_name = '';
 	let new_is_nodewar = 0;
 
+	let error = '';
+
 	$: {
 		if (war) {
 			init_values();
@@ -32,12 +34,21 @@
 		new_date;
 		new_name;
 
-		form_validity = form && !form.checkValidity();
+		const valid_war = $manager.is_valid_war(new_date, new_name);
+		form_validity = valid_war && form && form.checkValidity();
+
+		if (!valid_war) {
+			error = 'War already exists';
+		} else if (valid_war && !form_validity) {
+			error = 'Fill out all inputs';
+		} else {
+			error = '';
+		}
 	}
 
 	function edit_war(e: Event) {
 		e.preventDefault();
-		war.date = new Date(new_date);
+		war.date = new_date;
 		war.name = new_name;
 		war.is_nodewar = !!new_is_nodewar;
 
@@ -92,9 +103,12 @@
 			</label>
 		</div>
 
-		<div class="control is-flex">
-			<button class="button is-link" on:click={edit_war} disabled={form_validity}>Edit</button>
-			<button class="button is-danger ml-auto" on:click={delete_war} disabled={form_validity}
+		<div class="control is-flex submit_control">
+			<button class="button is-link" on:click={edit_war} disabled={!form_validity}>Edit</button>
+			{#if error.length > 0}
+				<span>{error}</span>
+			{/if}
+			<button class="button is-danger ml-auto" on:click={delete_war} 
 				>Delete</button
 			>
 		</div>
@@ -120,7 +134,15 @@
 		border-color: var(--color-bg-secondary);
 	}
 
-	button {
+	.submit_control {
 		margin-top: 12px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		text-align: center;
+	}
+
+	.submit_control span {
+		color: var(--color-danger);
 	}
 </style>

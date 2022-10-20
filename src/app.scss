@@ -48,7 +48,9 @@
 	--radius-base: 1rem;
 
 	--toastBorderRadius: 0.5rem;
-	--toastWidth: 10rem;
+	--toastWidth: fit-content;
+
+	--color-danger: hsl(348, 100%, 61%);
 }
 
 h1 {
@@ -68,6 +70,10 @@ body {
 	color: var(--color-text-primary);
 	background-color: var(--color-bg-primary);
 	position: relative;
+}
+
+.is-danger{
+	background-color: var(--color-danger) !important;
 }
 
 body::after {
@@ -283,7 +289,7 @@ i {
 }
 
 .negative {
-	color: hsl(348, 100%, 61%);
+	color: var(--color-danger);
 }
 
 .positive {
