@@ -107,6 +107,24 @@ export class War {
 	get id() {
 		return this.date + this.name;
 	}
+
+	to_json(){
+		return {
+			name: this.name,
+			date: this.date,
+			is_nodewar: this.is_nodewar,
+			logs: this.logs.map(
+				(e) =>
+					new Log(
+						e.player_one.name,
+						e.player_two.name,
+						e.kill,
+						e.player_two.guild.name,
+						e.time_string
+					)
+			)
+		}
+	}
 }
 
 export class Player {

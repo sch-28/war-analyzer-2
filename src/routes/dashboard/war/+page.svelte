@@ -2,7 +2,15 @@
 	import AddWarButton from '$root/components/dashboard/add_war_button.svelte';
 	import EditWarButton from '$root/components/dashboard/edit_war_button.svelte';
 	import { manager } from '$root/components/store';
+	import type { War } from '$root/types/data';
 	import Modal from 'svelte-simple-modal';
+
+	async function share_war(war: War) {
+		const result = await fetch('/api/share', {
+			method: 'POST',
+			body: JSON.stringify(war.to_json())
+		});
+	}
 </script>
 
 <nav class="level">
@@ -47,6 +55,7 @@
 
 				<div class="list-item-controls">
 					<div class="buttons is-right">
+						<button class="button" on:click={() => share_war(war)}>Share</button>
 						<Modal closeButton={false} styleWindow={{ background: 'var(--color-bg-primary)' }}>
 							<EditWarButton {war} />
 						</Modal>

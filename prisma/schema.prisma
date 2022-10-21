@@ -18,13 +18,14 @@ model User {
 }
 
 model War {
-  id         Int     @id @default(autoincrement())
   date       String
   is_nodewar Boolean
   user       User    @relation(fields: [userId], references: [id])
   userId     String
   name       String
   logs       Log[]
+
+  @@id([date, name, userId])
 }
 
 model Log {
@@ -34,6 +35,8 @@ model Log {
   player_two String
   guild      String
   is_kill    Boolean
-  war        War     @relation(fields: [war_id], references: [id])
-  war_id     Int
+  war        War     @relation(fields: [warDate, warName, warUserId], references: [date, name, userId])
+  warDate    String
+  warName    String
+  warUserId  String
 }

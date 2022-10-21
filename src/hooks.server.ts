@@ -1,9 +1,15 @@
-import { HOST, DISCORD_API_URL } from '$env/static/private';
-import type { Cookies, Handle } from '@sveltejs/kit';
+import { HOST, DISCORD_API_URL, ComSpec } from '$env/static/private';
+import type { Cookies, Handle, RequestEvent, ResolveOptions } from '@sveltejs/kit';
+import type { MaybePromise } from '@sveltejs/kit/types/private';
 import { prisma } from './components/prisma';
 import type { User } from './types/user';
 
-async function set_session(locals: App.Locals, user: User) {
+async function set_session(
+	request: {
+		event: RequestEvent<Partial<Record<string, string>>>;
+	},
+	user: User
+) {
 	const prisma_user = await prisma.user.upsert({
 		where: { id: user.id },
 		update: {},
@@ -17,7 +23,7 @@ async function set_session(locals: App.Locals, user: User) {
 		}
 	});
 
-	locals.user = {
+	return {
 		avatar: user.avatar,
 		discriminator: user.discriminator,
 		id: user.id,
@@ -51,7 +57,7 @@ export const handle: Handle = async (request) => {
 			const response = await discord_request.json();
 
 			if (response.id) {
-				set_session(request.event.locals, response);
+				request.event.locals.user = await set_session(request, response);
 			}
 		}
 	} else if (access_token) {
@@ -61,7 +67,7 @@ export const handle: Handle = async (request) => {
 
 		const response = await discord_request.json();
 		if (response.id) {
-			set_session(request.event.locals, response);
+			request.event.locals.user = await set_session(request, response);
 		}
 	}
 

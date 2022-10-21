@@ -121,21 +121,7 @@ export class Manager {
 	get_json() {
 		const json_wars = [];
 		for (let war of this.wars) {
-			json_wars.push({
-				name: war.name,
-				date: war.date,
-				is_nodewar: war.is_nodewar,
-				logs: war.logs.map(
-					(e) =>
-						new Log(
-							e.player_one.name,
-							e.player_two.name,
-							e.kill,
-							e.player_two.guild.name,
-							e.time_string
-						)
-				)
-			});
+			json_wars.push(war.to_json());
 		}
 
 		return JSON.stringify({ wars: json_wars });
