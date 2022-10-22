@@ -40,6 +40,7 @@ const storage = (key: string, initValue: Manager): Writable<Manager> => {
 export default storage;
 
 export interface Manager_JSON {
+	guild_name: string;
 	name: string;
 	date: string;
 	is_nodewar: boolean;
@@ -113,7 +114,7 @@ export class Manager {
 			war.logs = war.logs.map(
 				(l) => new Log(l.player_one, l.player_two, l.is_kill, l.guild, l.time)
 			);
-			const w = manager.add_war(war.name, war.date, war.is_nodewar, war.logs);
+			const w = manager.add_war(war.guild_name, war.name, war.date, war.is_nodewar, war.logs);
 		}
 		return manager;
 	}
@@ -127,7 +128,7 @@ export class Manager {
 		return JSON.stringify({ wars: json_wars });
 	}
 
-	add_war(name: string, date: string, is_nodewar: boolean, logs: Log[]) {
+	add_war(guild_name: string, name: string, date: string, is_nodewar: boolean, logs: Log[]) {
 		if (this.wars.find((war) => war.id == date + name)) {
 			return null;
 		}
@@ -137,7 +138,7 @@ export class Manager {
 		const players = new Set<Player>();
 
 		for (let log of logs) {
-			const guild_one = this.find_or_create_guild('Guild');
+			const guild_one = this.find_or_create_guild(guild_name);
 			const guild_two = this.find_or_create_guild(log.guild);
 
 			guilds.add(guild_one).add(guild_two);
@@ -154,7 +155,7 @@ export class Manager {
 			events.push(event);
 		}
 
-		const war = new War(name, date, is_nodewar, events);
+		const war = new War(guild_name, name, date, is_nodewar, events);
 		this.wars.push(war);
 
 		for (let guild of guilds) {

@@ -92,7 +92,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="control">
+		<!-- <div class="control">
 			<label class="radio">
 				<input type="radio" name="answer" value={1} bind:group={new_is_nodewar} />
 				Nodewar
@@ -101,16 +101,14 @@
 				<input type="radio" name="answer" value={0} bind:group={war.is_nodewar} />
 				GvG
 			</label>
-		</div>
+		</div> -->
 
 		<div class="control is-flex submit_control">
 			<button class="button is-link" on:click={edit_war} disabled={!form_validity}>Edit</button>
 			{#if error.length > 0}
 				<span>{error}</span>
 			{/if}
-			<button class="button is-danger ml-auto" on:click={delete_war} 
-				>Delete</button
-			>
+			<button class="button is-danger ml-auto" on:click={delete_war}>Delete</button>
 		</div>
 	</form>
 </div>
@@ -123,9 +121,11 @@
 		display: flex;
 		width: 100%;
 		gap: 15px;
+		align-items: center;
 	}
 	.inline .field {
 		width: 100%;
+		margin-bottom: 0;
 	}
 
 	input {

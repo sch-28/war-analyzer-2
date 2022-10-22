@@ -21,6 +21,7 @@ export const POST: RequestHandler = async (event) => {
 					create: {
 						date: war.date,
 						is_nodewar: war.is_nodewar,
+						guild_name: war.guild_name,
 						name: war.name,
 						logs: {
 							create: war.logs

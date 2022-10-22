@@ -23,6 +23,7 @@ model War {
   user       User    @relation(fields: [userId], references: [id])
   userId     String
   name       String
+  guild_name String
   logs       Log[]
 
   @@id([date, name, userId])

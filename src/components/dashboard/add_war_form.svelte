@@ -9,6 +9,7 @@
 
 	let files: FileList;
 	let name: string = '';
+	let guild_name: string = 'Guild';
 	let date: string = dayjs().format('YYYY-MM-DD');
 	let is_nodewar = 1;
 	let form: HTMLFormElement;
@@ -60,7 +61,7 @@
 		e.preventDefault();
 
 		if (loaded_logs && loaded_logs.length > 0) {
-			const result = $manager.add_war(name, date, !!is_nodewar, loaded_logs);
+			const result = $manager.add_war(guild_name, name, date, !!is_nodewar, loaded_logs);
 			if (!result) {
 				toast.push('Duplicate War', {
 					theme: {
@@ -99,6 +100,23 @@
 <div class="wrapper ">
 	<h2>Add War</h2>
 	<form action="" bind:this={form}>
+		<div class="field">
+			<label class="label " for="file">Logs</label>
+			<div class="file is-dark" class:has-name={files && files.length > 0}>
+				<label class="file-label">
+					<input class="file-input" type="file" id="file" name="resume" bind:files required />
+					<span class="file-cta ">
+						<span class="file-icon">
+							<i class="fas fa-upload" />
+						</span>
+						<span class="file-label"> Choose a file… </span>
+					</span>
+					{#if files && files.length > 0}
+						<span class="file-name is-dark">{files[0].name}</span>
+					{/if}
+				</label>
+			</div>
+		</div>
 		<div class="field inline">
 			<div class="field ">
 				<label class="label " for="name">Name</label>
@@ -120,23 +138,22 @@
 				</div>
 			</div>
 		</div>
-		<div class="field">
-			<div class="file is-dark" class:has-name={files && files.length > 0}>
-				<label class="file-label">
-					<input class="file-input" type="file" name="resume" bind:files required />
-					<span class="file-cta ">
-						<span class="file-icon">
-							<i class="fas fa-upload" />
-						</span>
-						<span class="file-label"> Choose a file… </span>
-					</span>
-					{#if files && files.length > 0}
-						<span class="file-name is-dark">{files[0].name}</span>
-					{/if}
-				</label>
+
+		<div class="field guild_name">
+			<label class="label " for="guild_name">Guild Name </label>
+			<div class="control">
+				<input
+					class="input is-dark"
+					type="text"
+					placeholder="Text input"
+					id="guild_name"
+					required
+					bind:value={guild_name}
+				/>
 			</div>
 		</div>
-		<div class="control">
+
+		<!-- <div class="control">
 			<label class="radio">
 				<input type="radio" name="answer" value={1} bind:group={is_nodewar} />
 				Nodewar
@@ -145,7 +162,7 @@
 				<input type="radio" name="answer" value={0} bind:group={is_nodewar} />
 				GvG
 			</label>
-		</div>
+		</div> -->
 
 		<div class="control submit_control">
 			<button class="button is-link" on:click={add_war} disabled={!form_validity}>Add</button>
@@ -164,9 +181,11 @@
 		display: flex;
 		width: 100%;
 		gap: 15px;
+		align-items: center;
 	}
 	.inline .field {
 		width: 100%;
+		margin-bottom: 0;
 	}
 
 	.file-cta,
@@ -177,12 +196,16 @@
 		border-color: var(--color-bg-secondary);
 	}
 
+	.guild_name {
+		width: calc(50% - 7.5px);
+	}
+
 	.file-cta {
 		background-color: var(--color-bg-secondary);
 	}
 
 	.submit_control {
-		margin-top: 12px;
+		margin-top: 22px;
 		display: flex;
 		align-items: center;
 		gap: 10px;

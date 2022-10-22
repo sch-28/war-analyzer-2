@@ -66,13 +66,15 @@ export class War {
 	local_guilds: Local_Guild[] = [];
 	local_players: Local_Guild_Player[] = [];
 	date: string;
+	guild_name: string;
 	name: string;
 	logs: Event[];
 	is_nodewar: boolean;
 
-	constructor(name: string, date: string, is_nodewar: boolean, logs: Event[]) {
+	constructor(guild_name: string, name: string, date: string, is_nodewar: boolean, logs: Event[]) {
 		this.date = date;
 		this.name = name;
+		this.guild_name = guild_name;
 		this.logs = logs;
 		this.is_nodewar = is_nodewar;
 	}
@@ -108,8 +110,9 @@ export class War {
 		return this.date + this.name;
 	}
 
-	to_json(){
+	to_json() {
 		return {
+			guild_name: this.guild_name,
 			name: this.name,
 			date: this.date,
 			is_nodewar: this.is_nodewar,
@@ -123,7 +126,7 @@ export class War {
 						e.time_string
 					)
 			)
-		}
+		};
 	}
 }
 

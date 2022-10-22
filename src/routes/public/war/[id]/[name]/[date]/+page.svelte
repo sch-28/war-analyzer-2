@@ -7,7 +7,7 @@
 	export let data: Manager_JSON;
 
 	const temp_manager = new Manager();
-	const war = temp_manager.add_war(data.name, data.date, data.is_nodewar, data.logs)!;
+	const war = temp_manager.add_war(data.guild_name, data.name, data.date, data.is_nodewar, data.logs)!;
 </script>
 
 <div class="wrapper">
