@@ -11,7 +11,7 @@
 		if (war_id) {
 			war = $manager.get_war(war_id);
 			//FIXME 500 Wrong Error Code
-			if (!war) throw error(404, 'Not found');
+			//if (!war) throw error(404, 'Not found');
 		}
 	}
 </script>

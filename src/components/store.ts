@@ -185,6 +185,8 @@ export class Manager {
 			}
 		}
 
+		// Prevents empty guilds (happens if guild name changes mid fight)
+		war.local_guilds = war.local_guilds.filter((g) => g.local_players.length > 0);
 		war.update();
 		return war;
 	}
