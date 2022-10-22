@@ -129,7 +129,7 @@ export class Manager {
 
 	add_war(name: string, date: string, is_nodewar: boolean, logs: Log[]) {
 		if (this.wars.find((war) => war.id == date + name)) {
-			return false;
+			return null;
 		}
 
 		const events: Event[] = [];

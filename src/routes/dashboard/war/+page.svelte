@@ -4,13 +4,19 @@
 	import { manager } from '$root/components/store';
 	import type { War } from '$root/types/data';
 	import Modal from 'svelte-simple-modal';
+	import type { User } from '$root/types/user';
+	import { goto } from '$app/navigation';
 
 	async function share_war(war: War) {
 		const result = await fetch('/api/share', {
 			method: 'POST',
 			body: JSON.stringify(war.to_json())
 		});
+
+		goto(`/public/war/${data?.id}/${war.name}/${war.date}`);
 	}
+
+	export let data: User | undefined;
 </script>
 
 <nav class="level">
@@ -55,7 +61,16 @@
 
 				<div class="list-item-controls">
 					<div class="buttons is-right">
-						<button class="button" on:click={() => share_war(war)}>Share</button>
+						<button
+							class="button"
+							on:click={() => share_war(war)}
+							disabled={!data || Object.keys(data).length == 0}
+						>
+							<span class="icon is-small">
+								<i class="fas fa-solid fa-share" />
+							</span>
+							<span>Share</span></button
+						>
 						<Modal closeButton={false} styleWindow={{ background: 'var(--color-bg-primary)' }}>
 							<EditWarButton {war} />
 						</Modal>
@@ -116,5 +131,8 @@
 		max-width: 100px;
 		overflow: hidden;
 		text-overflow: ellipsis;
+	}
+	i.fas {
+		color: black;
 	}
 </style>

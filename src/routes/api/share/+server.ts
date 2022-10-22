@@ -32,7 +32,6 @@ export const POST: RequestHandler = async (event) => {
 
 		return new Response(null, { status: 200 });
 	} catch (e) {
-		console.error(e);
 		return new Response(JSON.stringify(e), { status: 500 });
 	}
 };
