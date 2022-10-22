@@ -77,7 +77,7 @@
 			id: 'kill_diff',
 			width: '10%',
 			attributes: {
-				title: 'Performance compared to Average'
+				title: 'Average Kill Difference, performance compared to Average'
 			},
 			sort: {
 				compare: tag_compare
@@ -145,9 +145,14 @@
 </div>
 
 <style>
-	
+	nav {
+		height: 10%;
+		min-height: 10%;
+		margin: 0 !important;
+	}
 	.wrapper {
 		height: 90%;
+		max-height: 90%;
 		padding-top: 0.75rem;
 		padding-bottom: 0.75rem;
 	}

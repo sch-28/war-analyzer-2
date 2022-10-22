@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { Event, Guild, Local_Guild, Local_Guild_Player, Log, Player, War } from '$root/types/data';
+import type { User } from '$root/types/user';
 import dayjs from 'dayjs';
 import type { Writable } from 'svelte/store';
 
@@ -39,7 +40,7 @@ const storage = (key: string, initValue: Manager): Writable<Manager> => {
 
 export default storage;
 
-export interface Manager_JSON {
+export interface War_JSON {
 	guild_name: string;
 	name: string;
 	date: string;
@@ -51,11 +52,13 @@ export class Manager {
 	wars: War[];
 	players: Player[];
 	guilds: Guild[];
+	user: User | null;
 
 	constructor() {
 		this.wars = [];
 		this.players = [];
 		this.guilds = [];
+		this.user = null;
 	}
 
 	get sorted_players() {
@@ -108,7 +111,7 @@ export class Manager {
 		return player;
 	}
 
-	static from_json(json: { wars: Manager_JSON[] }) {
+	static from_json(json: { wars: War_JSON[] }) {
 		const manager = new Manager();
 		for (let war of json.wars) {
 			war.logs = war.logs.map(

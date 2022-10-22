@@ -67,11 +67,11 @@
 	}
 
 	.slot {
-		background-color: rgba(255, 255, 255, 0.05);
+		/* background-color: rgba(255, 255, 255, 0.05); */
 		border-radius: var(--radius-base);
-		padding: 15px;
+		/* padding: 15px; */
 		width: 85%;
-		box-shadow: 0px 2px 16px rgb(10 10 10 / 30%);
+		/* box-shadow: 0px 2px 16px rgb(10 10 10 / 30%); */
 		overflow: auto;
 		display: flex;
 		flex-direction: column;

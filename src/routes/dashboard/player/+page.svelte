@@ -67,7 +67,7 @@
 	const columns = [
 		{
 			name: 'Name',
-			id:"name",
+			id: 'name',
 			width: '15%',
 			attributes: {
 				title: 'Name'
@@ -139,7 +139,7 @@
 	<!-- Left side -->
 	<div class="level-left">
 		<div class="top_lvl level-item is-flex is-flex-direction-column is-align-items-flex-start ">
-			<div class="level-item war_title">
+			<div class="level-item">
 				<strong>Players</strong>
 			</div>
 		</div>
@@ -166,8 +166,14 @@
 </div>
 
 <style>
+	nav {
+		height: 10%;
+		min-height: 10%;
+		margin: 0 !important;
+	}
 	.wrapper {
 		height: 90%;
+		max-height: 90%;
 		padding-top: 0.75rem;
 		padding-bottom: 0.75rem;
 	}

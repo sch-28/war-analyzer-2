@@ -11,12 +11,14 @@
 	import Modal from 'svelte-simple-modal';
 	import EditWarButton from '$root/components/dashboard/edit_war_button.svelte';
 	import { goto } from '$app/navigation';
+	import type { User } from '$root/types/user';
+	import ShareWarButton from './share_war_button.svelte';
+	import { toast } from '@zerodevx/svelte-toast';
 
-	let chart: HTMLCanvasElement;
+	export let war: War;
 
-	Chart.register(...registerables);
+	let is_public = false;
 
-	export let war: War | undefined;
 	let grid_data: { name: string; kills: number; deaths: number; performance: VNode<{}> }[] = [];
 	let grid: Grid;
 	let show_grid_header = false;
@@ -33,6 +35,35 @@
 	$: {
 		selected_guild;
 		if (war) update_grid(war);
+	}
+
+	$: {
+		is_public = !$page.url.href.includes('/dashboard/war/');
+	}
+
+	let is_added = false;
+	$: {
+		is_added = !$manager.is_valid_war(war.date, war.name);
+	}
+
+	function add_to_dash() {
+		if (!war) return;
+		if (!is_added) {
+			const w = war.to_json();
+			const result = $manager.add_war(w.guild_name, w.name, w.date, w.is_nodewar, w.logs);
+			if (!result) {
+				toast.push('Duplicate War', {
+					theme: {
+						'--toastBackground': '#F56565',
+						'--toastBarBackground': '#C53030'
+					}
+				});
+			} else {
+				$manager = $manager;
+			}
+		}
+
+		goto(`/dashboard/war/${war.id}`);
 	}
 
 	function update_grid(war: War) {
@@ -65,61 +96,6 @@
 		}
 		grid_data = new_data;
 	}
-
-	/* const data: ChartData<'line'> = {
-		labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-		datasets: [
-			{
-				label: 'My First dataset Test',
-
-				data: [65, 59, 80, 81, 56, 55, 40]
-			},
-			{
-				label: 'My Second dataset',
-
-				data: [28, 48, 40, 19, 86, 27, 90]
-			}
-		]
-	}; */
-
-	/* onMount(() => {
-		if (browser) create_chart();
-	}); */
-
-	/* function create_chart() {
-		new Chart(chart, {
-			type: 'bar',
-			data: data,
-			options: {
-				plugins: {
-					legend: {
-						display: false
-					}
-				},
-				scales: {
-					x: {
-						grid: {
-							color: 'hsl(43 100% 52% / 10%)'
-						},
-						ticks: { color: 'hsl(43 100% 52% )' }
-					},
-					y: {
-						beginAtZero: false,
-						ticks: { color: 'hsl(43 100% 52% )', font: { size: 18 } },
-						grid: {
-							color: 'hsl(43 100% 52% / 40%)'
-						},
-						title: {
-							display: true,
-							text: 'Satisfaction (%)',
-							color: 'hsl(43 100% 52% )',
-							font: { size: 24 }
-						}
-					}
-				}
-			}
-		});
-	} */
 
 	const columns = [
 		{
@@ -183,6 +159,7 @@
 					</a>
 					<div class="level-item war_title">
 						<strong>{war.name}</strong>
+						<i class="list-item-description">{war.formatted_date}</i>
 					</div>
 				</div>
 			</div>
@@ -197,7 +174,7 @@
 			</div>
 		</div>
 	</nav>
-	<div class="tile is-ancestor p-3">
+	<div class="tile is-ancestor">
 		<div class="tile pt-3 pb-3 is-7">
 			<div class="grid_content" class:show_header={show_grid_header}>
 				<Grid
@@ -211,60 +188,111 @@
 				/>
 			</div>
 		</div>
-		<div class="tile leaderboard" class:padding={war.local_guilds.length > 3}>
-			<div
-				class="list has-hoverable-list-items has-visible-pointer-controls "
-				class:scrollable={war.local_guilds.length > 3}
-			>
-				{#each war.sorted_guilds as local_guild, index}
-					<div
-						class="list-item "
-						on:click={() => (selected_guild = local_guild)}
-						class:is-active={selected_guild == local_guild}
-					>
-						<div class="list-item-image">
-							<span class=" level-item icon has-text-white">
-								{#if index < 9}
-									<i class="fas fa-{index + 1} " />
-								{:else}
-									<i class="fas fa-{(index + 1).toString()[0]} " />
-									<i class="fas fa-{(index + 1).toString()[1]} " />
-								{/if}
-							</span>
-						</div>
-
-						<div class="list-item-content">
-							<div class="list-item-title has-text-white">{local_guild.guild.name}</div>
-							<div class="list-item-description">
-								<span>
-									{local_guild.local_players.length} Players
+		<div class="tile is-vertical">
+			<div class="tile leaderboard" class:padding={war.local_guilds.length > 3}>
+				<div
+					class="list has-hoverable-list-items has-visible-pointer-controls "
+					class:scrollable={war.local_guilds.length > 3}
+				>
+					{#each war.sorted_guilds as local_guild, index}
+						<div
+							class="list-item "
+							on:click={() => (selected_guild = local_guild)}
+							class:is-active={selected_guild == local_guild}
+						>
+							<div class="list-item-image">
+								<span class=" level-item icon has-text-white">
+									{#if index < 9}
+										<i class="fas fa-{index + 1} " />
+									{:else}
+										<i class="fas fa-{(index + 1).toString()[0]} " />
+										<i class="fas fa-{(index + 1).toString()[1]} " />
+									{/if}
 								</span>
 							</div>
-						</div>
 
-						<div class="list-item-controls">
-							<FormNumber number={local_guild.kill_difference} neutral={0} />
+							<div class="list-item-content">
+								<div class="list-item-title has-text-white">{local_guild.guild.name}</div>
+								<div class="list-item-description">
+									<span>
+										{local_guild.local_players.length} Players
+									</span>
+								</div>
+							</div>
+
+							<div class="list-item-controls">
+								<FormNumber number={local_guild.kill_difference} neutral={0} />
+							</div>
 						</div>
-					</div>
-				{/each}
+					{/each}
+				</div>
+			</div>
+			<div class="tile stats">
+				<div class="stat">
+					<span>Duration</span>
+					<span>{war.duration} minutes</span>
+				</div>
+				<div class="stat">
+					<span>Players</span>
+					<span>{war.local_players.length} Players over {war.local_guilds.length} Guilds</span>
+				</div>
+				<div class="control war_controls">
+					<button class="button is-primary" disabled>
+						<span class="icon is-small">
+							<i class="fas fa-solid fa-download" />
+						</span>
+						<span>Download</span>
+					</button>
+					{#if is_public}
+						<button class="button is-primary" on:click={add_to_dash}>
+							{#if is_added}
+								<span class="icon is-small">
+									<i class="fas fa-solid fa-list" />
+								</span>
+								<span>Inspect in dashboard</span>
+							{:else}
+								<span class="icon is-small">
+									<i class="fas fa-solid fa-save" />
+								</span>
+								<span>Add to dashboard</span>
+							{/if}
+						</button>
+					{:else}
+						<ShareWarButton {war} />
+					{/if}
+				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
 <style>
+	nav {
+		height: 10%;
+		min-height: 10%;
+		margin: 0 !important;
+	}
+	.tile.is-vertical {
+		background-color: transparent;
+		box-shadow: none;
+		gap: 25px;
+	}
 	.scrollable {
 		overflow-y: scroll;
-		max-height: 276px;
+		max-height: 100%;
 	}
 
 	.leaderboard {
 		height: fit-content;
+		height: 50%;
 	}
 
 	.is-ancestor {
 		gap: 25px;
 		height: 90%;
+		max-height: 90%;
+		width: 100%;
+		margin: 0;
 	}
 
 	.padding {
@@ -279,7 +307,32 @@
 
 	.war_title {
 		display: flex;
+		gap: 5px;
+	}
+
+	.stat {
+		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
+	}
+	.stat span:first-child {
+		font-weight: 600;
+	}
+	.stat span:last-child {
+		font-size: var(--font-10);
+	}
+	.stats {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 26px 24px;
+	}
+	:global(.war_controls button) {
+		width: 50%;
+	}
+	.control {
+		margin-top: auto;
+		display: flex;
+		justify-content: center;
+		gap: 5px;
 	}
 </style>

@@ -16,7 +16,6 @@ export const load: PageServerLoad = async ({ params }) => {
 			logs: true
 		}
 	});
-
 	if (war) {
 		return war;
 	}

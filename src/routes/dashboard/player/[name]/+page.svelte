@@ -19,11 +19,12 @@
 	}
 
 	let grid_data: {
-		id: number;
+		id: string;
 		date: string;
 		kills: number;
 		deaths: number;
 		performance: VNode<{}>;
+		duration: VNode<{}>;
 	}[] = [];
 	let grid: Grid;
 	let show_grid_header = false;
@@ -177,7 +178,7 @@
 			{/each}
 		</div>
 	</div> -->
-	<div class="tile is-ancestor p-3">
+	<div class="tile is-ancestor">
 		<div class="tile pt-3 pb-3 is-7">
 			<div class="grid_content" class:show_header={show_grid_header}>
 				<Grid
@@ -205,42 +206,57 @@
 			</div>
 			<div class="stat">
 				<span>Average Performance</span>
-				<FormattedNumber number={player.average_performance} neutral={1} />
+				<span> <FormattedNumber number={player.average_performance} neutral={1} /></span>
 			</div>
 			<div class="stat">
 				<span>Average Join Duration</span>
-				<FormattedNumber
-					number={player.average_duration_percentage * 100}
-					neutral={75}
-					after="%"
-					places={0}
-				/>
+				<span>
+					<FormattedNumber
+						number={player.average_duration_percentage * 100}
+						neutral={75}
+						after="%"
+						places={0}
+					/></span
+				>
 			</div>
 			<div class="stat">
 				<span>Average Kills</span>
-				{format(player.average_kills)}
+				<span>{format(player.average_kills)}</span>
 			</div>
 			<div class="stat">
 				<span>Average Deaths</span>
-				{format(player.average_deaths)}
+				<span>{format(player.average_deaths)}</span>
 			</div>
 		</div>
 	</div>
 {/if}
 
 <style>
-
+	nav {
+		height: 10%;
+		min-height: 10%;
+		margin: 0 !important;
+	}
 	strong {
 		color: white;
 		font-size: var(--font-18);
 	}
 	.is-ancestor {
+		width: 100%;
 		gap: 25px;
 		height: 90%;
+		max-height: 90%;
+		margin: 0;
 	}
 	.stat {
 		display: flex;
 		flex-direction: column;
+	}
+	.stat span:first-child {
+		font-weight: 600;
+	}
+	.stat span:last-child {
+		font-size: var(--font-10);
 	}
 	.stats {
 		display: flex;

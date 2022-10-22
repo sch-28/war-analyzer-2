@@ -29,7 +29,13 @@ async function set_session(
 		id: user.id,
 		username: user.username,
 		wars: prisma_user.wars.map((war) => {
-			return { name: war.name, date: war.date, is_nodewar: war.is_nodewar, logs: war.logs };
+			return {
+				name: war.name,
+				date: war.date,
+				is_nodewar: war.is_nodewar,
+				logs: war.logs,
+				guild_name: war.guild_name
+			};
 		})
 	};
 }

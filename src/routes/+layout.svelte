@@ -5,8 +5,13 @@
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
 	import type { User } from '$root/types/user';
+	import { manager } from '$root/components/store';
 
 	export let data: User | undefined;
+
+	if (data && Object.keys(data).length > 0) {
+		$manager.user = data;
+	}
 
 	onMount(() => {
 		const app = new SvelteToast({

@@ -71,43 +71,49 @@ export class War {
 	logs: Event[];
 	is_nodewar: boolean;
 
+	formatted_date: string;
+	enemy_guilds: Local_Guild[] = [];
+	kill_events: Event[] = [];
+	death_events: Event[] = [];
+	sorted_guilds: Local_Guild[] = [];
+	id: string;
+	duration: number = 0;
+
 	constructor(guild_name: string, name: string, date: string, is_nodewar: boolean, logs: Event[]) {
 		this.date = date;
 		this.name = name;
 		this.guild_name = guild_name;
 		this.logs = logs;
 		this.is_nodewar = is_nodewar;
+		this.formatted_date = new Date(this.date).toLocaleDateString();
+		this.id = this.date + this.name;
 	}
 
 	update() {
 		this.local_guilds.forEach((g) => g.update());
 		this.local_players.forEach((p) => p.update());
 		this.local_guilds.forEach((g) => g.update());
+
+		this.formatted_date = new Date(this.date).toLocaleDateString();
+		this.enemy_guilds = this.local_guilds.filter((g) => g.guild.name != this.guild_name);
+		this.kill_events = this.logs.filter((l) => l.kill);
+		this.death_events = this.logs.filter((l) => !l.kill);
+		this.sorted_guilds = [...this.local_guilds].sort(
+			(a, b) => b.kills - b.deaths - (a.kills - a.deaths)
+		);
+		this.id = this.date + this.name;
+		this.duration = this.get_duration();
 	}
 
-	get formatted_date() {
-		return new Date(this.date).toLocaleDateString();
-	}
+	get_duration() {
+		const logs = [...this.kill_events, ...this.death_events];
+		if (logs.length < 2) return 0;
 
-	get enemy_local_guilds() {
-		return this.local_guilds.filter((g) => g.guild.name != 'Guild');
-	}
+		logs.sort((a, b) => (b.time <= a.time ? 1 : -1));
 
-	get kills() {
-		return this.logs.filter((l) => l.kill);
-	}
-
-	get deaths() {
-		return this.logs.filter((l) => !l.kill);
-	}
-
-	get sorted_guilds() {
-		const guilds = [...this.local_guilds].sort((a, b) => b.kills - b.deaths - (a.kills - a.deaths));
-		return guilds;
-	}
-
-	get id() {
-		return this.date + this.name;
+		const start = logs[0].time;
+		const end = logs[logs.length - 1].time;
+		return end.diff(start, 'minutes');
 	}
 
 	to_json() {

@@ -151,7 +151,7 @@
 		</div>
 	</nav>
 
-	<div class="tile is-ancestor p-3">
+	<div class="tile is-ancestor">
 		<div class="tile pt-3 pb-3 is-7 ">
 			<div class="grid_content" class:show_header={show_grid_header}>
 				<Grid
@@ -195,13 +195,21 @@
 {/if}
 
 <style>
+	nav {
+		height: 10%;
+		min-height: 10%;
+		margin: 0 !important;
+	}
 	strong {
 		color: white;
 		font-size: var(--font-18);
 	}
 	.is-ancestor {
+		width: 100%;
 		gap: 25px;
 		height: 90%;
+		max-height: 90%;
+		margin: 0;
 	}
 	.stat {
 		display: flex;
