@@ -281,7 +281,7 @@
 		top: 0;
 		left: 0;
 		position: absolute;
-		border: 10px solid rgba(255, 255, 255, 0.07);
+		border: 10px solid #353941;
 		border-radius: calc(var(--radius-base) + 0.2rem);
 		border-top-left-radius: 0;
 
@@ -303,7 +303,7 @@
 		border-radius: 10px;
 		padding: 10px;
 		padding-top: 5px;
-        padding-bottom: 0px;
+		padding-bottom: 0px;
 		z-index: 1;
 		box-sizing: border-box;
 		display: block;
@@ -320,5 +320,4 @@
 		bottom: -10px;
 		left: 0;
 	}
-
 </style>

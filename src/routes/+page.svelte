@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Footer from '$root/components/footer.svelte';
 	import Logs from '$root/components/home/logs.svelte';
 </script>
 
@@ -24,8 +25,30 @@
 	</div>
 	<Logs />
 </section>
+<section class="guide">
+	<img class="example_image" src="/images/example.jpg" alt="dashboard" />
+	<div class="text">
+		<h2>Simple Overview</h2>
+		<span
+			>Get a quick and thorough insight into your performance and share the results with a click.
+		</span>
+	</div>
+</section>
+
+<section class="guide documentation">
+	<div class="text">
+		<h2>You already have combat logs?</h2>
+	</div>
+	<a href="/documentation" class="button is-primary">Start Analyzing</a>
+</section>
+
+<Footer />
 
 <style>
+	.example_image {
+		width: 65%;
+		border-radius: var(--radius-base);
+	}
 	.landing {
 		display: flex;
 		flex-direction: column;
@@ -56,6 +79,16 @@
 		display: flex;
 		width: 75%;
 		gap: 60px;
+		align-items: center;
+	}
+
+	.guide.documentation {
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	section:not(:last-of-type):not(:first-of-type) {
+		margin-bottom: 10rem;
 	}
 
 	.guide .text {
@@ -70,5 +103,9 @@
 	section {
 		margin-left: auto;
 		margin-right: auto;
+	}
+	h2,
+	h3 {
+		text-align: center;
 	}
 </style>
