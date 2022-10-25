@@ -1,4 +1,4 @@
-import { HOST, DISCORD_API_URL, ComSpec } from '$env/static/private';
+import { HOST_ADDRESS, DISCORD_API_URL, ComSpec } from '$env/static/private';
 import type { Cookies, Handle, RequestEvent, ResolveOptions } from '@sveltejs/kit';
 import type { MaybePromise } from '@sveltejs/kit/types/private';
 import { prisma } from './components/prisma';
@@ -49,7 +49,7 @@ export const handle: Handle = async (request) => {
 	let new_cookies = '';
 
 	if (refresh_token && !access_token) {
-		const refresh_request = await fetch(`${HOST}/discord/refresh?code=${refresh_token}`);
+		const refresh_request = await fetch(`${HOST_ADDRESS}/discord/refresh?code=${refresh_token}`);
 
 		const discord_response = await refresh_request.json();
 
