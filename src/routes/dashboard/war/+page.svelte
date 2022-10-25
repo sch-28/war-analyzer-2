@@ -19,7 +19,7 @@
 
 	<!-- Right side -->
 	<div class="level-right">
-		<p class="level-item">
+		<p class="level-item mr-2">
 			<Modal closeButton={false} styleWindow={{ background: 'var(--color-bg-primary)' }}>
 				<AddWarButton />
 			</Modal>

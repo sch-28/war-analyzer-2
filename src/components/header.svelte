@@ -50,7 +50,11 @@
 			>
 				Dashboard
 			</a>
-			<a class="navbar-item" href={'javascript:;'} on:click={() => (expand_menu = false)}>
+			<a
+				class="navbar-item"
+				href="https://nwa.documentation.oracle-tools.site/"
+				on:click={() => (expand_menu = false)}
+			>
 				Documentation
 			</a>
 			<div class="navbar-item">
