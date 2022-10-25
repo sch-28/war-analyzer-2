@@ -1,19 +1,20 @@
----
-description: >-
-  The Nodewar Analyzer helps you extract more information out of your Guild- and
-  Nodewars.
----
 
-# Introduction
+# War Analyzer for Black Desert Online
 
-Follow this guide to start tracking & analyzing on your own.
+This project is still in progress. It is based on this [older version](https://github.com/sch-28/war-analyzer). 
 
-[Extracting Combat Logs](https://app.gitbook.com/s/N71pW2Yi3lMSolUtT2e1/getting-started/extracting-combat-logs)\
-Learn how to track BDO's combat messages.
+The tools helps visualizing BDO combat logs. It is still in an early development phase, feedback is appreciated.
 
-[Uploading Logs](getting-started/uploading-logs.md)\
-Upload your tracked logs and inspect the results.
+## Logs
+The logs need to be in the following format:
 
-[Sharing Results](getting-started/sharing-results.md)\
-Share your results with others.
+```
+[xx:xx:xx] someone died to someone_else from some_guild
+```
 
+and uploaded as a *.log file.
+
+You can use this [project](https://github.com/sch-28/combat_logger) to automatically extract combat logs of your game.
+
+## Dashboard
+![img](https://github.com/sch-28/war-analyzer-2/blob/main/static/images/example_2.jpg)

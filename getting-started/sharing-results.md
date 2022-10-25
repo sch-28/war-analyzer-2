@@ -1,3 +1,0 @@
-# Sharing Results
-
-TODO
