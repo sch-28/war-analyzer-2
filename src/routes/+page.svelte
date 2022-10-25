@@ -1,6 +1,25 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import Footer from '$root/components/footer.svelte';
 	import Logs from '$root/components/home/logs.svelte';
+	import { onMount } from 'svelte';
+
+	let on_top = true;
+
+	onMount(() => {
+		if (browser) {
+			document.onscroll = () =>
+				(on_top = document.scrollingElement != null && document.scrollingElement.scrollTop == 0);
+		}
+	});
+
+	function scroll(e: Event) {
+		e.preventDefault();
+
+		document.querySelector('#description')?.scrollIntoView({
+			behavior: 'smooth'
+		});
+	}
 </script>
 
 <svelte:head>
@@ -13,9 +32,13 @@
 	<span>A website allowing you to analyze your combat logs from Nodewars and GvGs</span>
 	<br />
 	<a class="button is-primary" data-sveltekit-prefetch href="/dashboard">Get Started</a>
+
+	<a href="#description" on:click={scroll}
+		><i class="fa-solid fa-chevron-down down_arrow fa-2x" class:hidden={!on_top} /></a
+	>
 </section>
 
-<section class="guide">
+<section class="guide" id="description">
 	<div class="text">
 		<h2>More than boring Logs</h2>
 		<span
@@ -58,6 +81,7 @@
 		text-align: center;
 		height: calc(100vh - 72px);
 		padding-bottom: 200px;
+		position: relative;
 	}
 	.landing h1 {
 		margin-bottom: 10px;
@@ -104,8 +128,19 @@
 		margin-left: auto;
 		margin-right: auto;
 	}
-	h2,
-	h3 {
+	h2 {
 		text-align: center;
+	}
+
+	.down_arrow {
+		position: absolute;
+		bottom: 20px;
+		color: rgba(255, 255, 255, 0.5);
+		opacity: 1;
+		transition: all 1s;
+	}
+
+	.down_arrow.hidden {
+		opacity: 0;
 	}
 </style>
