@@ -16,3 +16,5 @@ and uploaded as a *.log file.
 
 You can use this [project](https://github.com/sch-28/combat_logger) to automatically extract combat logs of your game.
 
+## Dashboard
+![img](https://github.com/sch-28/war-analyzer-2/blob/main/static/images/example_2.jpg)
