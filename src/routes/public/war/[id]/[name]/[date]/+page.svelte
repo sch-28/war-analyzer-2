@@ -16,6 +16,13 @@
 	)!;
 </script>
 
+<svelte:head>
+	<title>{war.name}</title>
+	<meta content={war.name} property="og:title" />
+	<meta content="Site Description" property="og:description" />
+	<meta content={$page.url.href} property="og:url" />
+</svelte:head>
+
 <div class="wrapper">
 	<War {war} />
 </div>

@@ -8,7 +8,9 @@
 		return $page.url.pathname.includes(url);
 	};
 </script>
-
+<svelte:head>
+	<title>Dashboard</title>
+</svelte:head>
 <div class="wrapper">
 	<aside class="menu">
 		<p class="menu-label">General</p>

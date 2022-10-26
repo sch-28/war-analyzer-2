@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import type { User } from '$root/types/user';
 	import { manager } from '$root/components/store';
+	import { page } from '$app/stores';
 
 	export let data: User | undefined;
 
@@ -24,10 +25,18 @@
 	});
 </script>
 
+<svelte:head>
+	<meta content="BDO Combat Analyzer" property="og:title" />
+	<meta
+		content="A website allowing you to analyze your combat logs from Nodewars and GvGs"
+		property="og:description"
+	/>
+	<meta content={$page.url.href} property="og:url" />
+</svelte:head>
+
 <div class="body">
 	<Header user={data} />
 	<slot />
-	<!-- <img src="/images/background.jpg" alt="test" class="background" /> -->
 </div>
 
 <style>
