@@ -45,7 +45,7 @@ export const GET: RequestHandler = async (event) => {
 		'Set-Cookie',
 		`refresh_token=${response.refresh_token}; Path=/; HttpOnly; SameSite=Strict; Expires=${refresh_token_expires_in}`
 	);
-	client_response.headers.append('Location', '/');
+	 client_response.headers.append('Location', '/discord/redirect');
 
 	return client_response;
 };

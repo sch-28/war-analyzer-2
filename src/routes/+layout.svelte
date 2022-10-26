@@ -36,7 +36,7 @@
 		max-width: 1448px;
 		margin: 0 auto;
 		position: relative;
-		height: 100%;
+		height: 100vh;
 		z-index: 1;
 	}
 </style>
