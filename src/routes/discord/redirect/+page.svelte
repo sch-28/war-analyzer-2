@@ -1,11 +1,10 @@
 <svelte:head>
-	<meta http-equiv="refresh" content="0; url='/'" />
+	<meta http-equiv="refresh" content="1; url='/'" />
 </svelte:head>
 
 <div class="wrapper">
 	<div class="has-text-centered">
-		<h1>Redirecting...</h1>
-		Still here?
+		<h1>Redirecting..</h1>
 	</div>
 	<a href="/" class="button is-primary">Take me back</a>
 </div>
@@ -18,6 +17,7 @@
 		align-items: center;
 		flex-direction: column;
 		gap: 10px;
+		padding-bottom: 200px;
 	}
 
 	h1 {
