@@ -142,6 +142,7 @@
 	];
 
 	function open_player(event: CustomEvent) {
+		if (is_public) return;
 		const name = event.detail[1]._cells[0].data;
 		goto(`/dashboard/player/${name}`);
 	}
