@@ -31,7 +31,7 @@
 	<h1>Nodewar Analyzer</h1>
 	<span>A website allowing you to analyze your combat logs from Nodewars and GvGs</span>
 	<br />
-	<a class="button is-primary" data-sveltekit-prefetch href="/dashboard">Get Started</a>
+	<a class="button is-primary" data-sveltekit-prefetch href="/dashboard/war">Get Started</a>
 
 	<a href="#description" on:click={scroll}
 		><i class="fa-solid fa-chevron-down down_arrow fa-2x" class:hidden={!on_top} /></a

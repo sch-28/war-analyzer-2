@@ -45,7 +45,7 @@
 			<a
 				class="navbar-item"
 				data-sveltekit-prefetch
-				href="/dashboard"
+				href="/dashboard/war"
 				on:click={() => (expand_menu = false)}
 			>
 				Dashboard

@@ -13,7 +13,7 @@
 	<aside class="menu">
 		<p class="menu-label">General</p>
 		<ul class="menu-list">
-			<li><a class:is-active={is_url('/dashboard')} href="/dashboard">Dashboard</a></li>
+			<!-- <li><a class:is-active={is_url('/dashboard')} href="/dashboard">Dashboard</a></li> -->
 			<li>
 				<a
 					class:is-active={is_url('/dashboard/war') || is_suburl('/dashboard/war/')}
