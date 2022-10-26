@@ -101,9 +101,23 @@
 
 	.guide {
 		display: flex;
+
 		width: 75%;
 		gap: 60px;
 		align-items: center;
+	}
+	.guide .text {
+		width: 68%;
+	}
+
+	@media screen and (max-width: 769px) {
+		.guide {
+			flex-direction: column;
+			width: 95%;
+		}
+		.guide .text {
+			width: 100%;
+		}
 	}
 
 	.guide.documentation {
@@ -113,10 +127,6 @@
 
 	section:not(:last-of-type):not(:first-of-type) {
 		margin-bottom: 10rem;
-	}
-
-	.guide .text {
-		width: 68%;
 	}
 
 	.guide .text span {
