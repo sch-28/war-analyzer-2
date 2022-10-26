@@ -1,4 +1,5 @@
-FROM node:16.14.2-alpine 
+FROM node:16-slim
+RUN apt-get update && apt-get install -y openssl
 WORKDIR /usr/src/app
 COPY . .
 RUN npm install && npm run build
