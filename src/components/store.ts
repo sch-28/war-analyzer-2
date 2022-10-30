@@ -81,6 +81,14 @@ export class Manager {
 		return this.guilds.find((g) => g.name === guild_name);
 	}
 
+	get_wars(sort_by: 'added' | 'date' = 'added') {
+		if (sort_by == 'date') {
+			return [...this.wars].sort((a, b) => (new Date(a.date) <= new Date(b.date) ? -1 : 1));
+		} else {
+			return this.wars;
+		}
+	}
+
 	/* delete_war(id: number) {
 		//TODO
 		console.log(this.wars.length);

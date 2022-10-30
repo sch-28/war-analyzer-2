@@ -7,6 +7,13 @@
 	import type { User } from '$root/types/user';
 	import { goto } from '$app/navigation';
 	import ShareWarButton from '$root/components/dashboard/share_war_button.svelte';
+
+	let sort_dropdown = false;
+	let sort_by: 'added' | 'date' = 'added';
+
+	$: {
+		sort_by;
+	}
 </script>
 
 <nav class="level">
@@ -19,6 +26,32 @@
 
 	<!-- Right side -->
 	<div class="level-right">
+		<div
+			class="dropdown level-item"
+			on:click={() => (sort_dropdown = !sort_dropdown)}
+			class:is-active={sort_dropdown}
+		>
+			<div class="dropdown-trigger">
+				<button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+					<i class="fa-solid fa-arrow-down-wide-short has-text-black" />
+					<span>{sort_by}</span>
+					<span class="icon is-small ">
+						<i
+							class="fas fa-angle-down has-text-black"
+							aria-hidden="true"
+							class:turn={sort_dropdown}
+						/>
+					</span>
+				</button>
+			</div>
+			<div class="dropdown-menu" id="dropdown-menu" role="menu">
+				<div class="dropdown-content">
+					<a href={''} on:click={() => (sort_by = 'added')} class="dropdown-item"> Added </a>
+					<a href={''} on:click={() => (sort_by = 'date')} class="dropdown-item"> Date </a>
+				</div>
+			</div>
+		</div>
+
 		<p class="level-item mr-2">
 			<Modal closeButton={false} styleWindow={{ background: 'var(--color-bg-primary)' }}>
 				<AddWarButton />
@@ -28,7 +61,7 @@
 </nav>
 <div class="wars">
 	<div class="list has-hoverable-list-items">
-		{#each $manager.wars as war}
+		{#each $manager.get_wars(sort_by) as war}
 			<div class="list-item">
 				<a href="/dashboard/war/{war.id}" class="war_link">
 					<div class="list-item-content">
@@ -117,5 +150,25 @@
 		max-width: 100px;
 		overflow: hidden;
 		text-overflow: ellipsis;
+	}
+	.dropdown-menu {
+		min-width: 131px;
+		left: unset;
+	}
+	.dropdown-trigger button > span:first-of-type {
+		width: 50px;
+		text-transform: capitalize;
+		text-align: left;
+	}
+	.dropdown-trigger button {
+		display: flex;
+		gap: 5px;
+	}
+
+	.icon i {
+		transition: all 225ms;
+	}
+	i.turn {
+		transform: rotate(-180deg);
 	}
 </style>
