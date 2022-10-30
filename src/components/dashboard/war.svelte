@@ -222,7 +222,12 @@
 							</div>
 
 							<div class="list-item-controls">
-								<FormNumber number={local_guild.kill_difference} neutral={0} />
+								<FormNumber
+									number={local_guild.kill_difference}
+									neutral={0}
+									description="Absolute Kill Difference"
+								/>
+								- <FormNumber number={local_guild.kd} neutral={1} description="Kill/Death Ratio" />
 							</div>
 						</div>
 					{/each}
