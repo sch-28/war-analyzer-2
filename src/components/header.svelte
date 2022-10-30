@@ -64,7 +64,7 @@
 							<strong>Log in</strong>
 						</a>
 					{:else}
-						<a class="button" href="/discord/auth">
+						<a class="button" href="/dashboard/war">
 							<strong>{user.username}</strong>
 						</a>
 					{/if}
