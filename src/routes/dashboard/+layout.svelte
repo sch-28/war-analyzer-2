@@ -43,7 +43,7 @@
 		</ul> -->
 		<p class="menu-label">Account</p>
 		<ul class="menu-list">
-			<li><a>Shared Wars</a></li>
+			<li><a href="/dashboard/shared">Shared Wars</a></li>
 			<li><a href="/discord/signout">Logout</a></li>
 		</ul>
 	</aside>

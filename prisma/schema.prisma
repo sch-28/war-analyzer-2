@@ -20,7 +20,7 @@ model User {
 model War {
   date       String
   is_nodewar Boolean
-  user       User    @relation(fields: [userId], references: [id])
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   name       String
   guild_name String
@@ -36,7 +36,7 @@ model Log {
   player_two String
   guild      String
   is_kill    Boolean
-  war        War     @relation(fields: [warDate, warName, warUserId], references: [date, name, userId])
+  war        War     @relation(fields: [warDate, warName, warUserId], references: [date, name, userId], onDelete: Cascade)
   warDate    String
   warName    String
   warUserId  String

@@ -9,7 +9,7 @@
 	import Grid from 'gridjs-svelte';
 	import { html } from 'gridjs';
 	import Modal from 'svelte-simple-modal';
-	import EditWarButton from '$root/components/dashboard/edit_war_button.svelte';
+	import EditWarButton from '$root/components/dashboard/modals/edit_war_button.svelte';
 	import { goto } from '$app/navigation';
 	import type { User } from '$root/types/user';
 	import ShareWarButton from './share_war_button.svelte';

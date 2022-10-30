@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from 'svelte-simple-modal';
-	import AddWarButton from '$root/components/dashboard/add_war_button.svelte';
+	import AddWarButton from '$root/components/dashboard/modals/add_war_button.svelte';
 </script>
 
 <div class="main">

@@ -3,7 +3,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import dayjs, { Dayjs } from 'dayjs';
 	import { afterUpdate, getContext } from 'svelte';
-	import { manager } from '../store';
+	import { manager } from '../../store';
 
 	const { close } = getContext('simple-modal') as any;
 
