@@ -11,6 +11,9 @@
 				method: 'POST',
 				body: JSON.stringify(war.to_json())
 			});
+			if (result.status == 200) {
+				$manager.user.wars.push(war.to_json());
+			}
 		}
 		goto(`/public/war/${$manager.user.id}/${war.name}/${war.date}`);
 	}
@@ -26,9 +29,9 @@
 
 <button class="button is-primary" on:click={() => share_war()} disabled={!war}>
 	{#if is_shared()}
-    <span class="icon is-small">
-        <i class="fas fa-solid fa-globe" />
-    </span>
+		<span class="icon is-small">
+			<i class="fas fa-solid fa-globe" />
+		</span>
 		<span>Public</span>
 	{:else}
 		<span class="icon is-small">
@@ -37,7 +40,3 @@
 		<span>Share</span>
 	{/if}
 </button>
-
-<style>
-
-</style>

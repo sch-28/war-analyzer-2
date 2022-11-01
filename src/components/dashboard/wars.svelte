@@ -10,19 +10,19 @@
 	let sort_dropdown = false;
 	let sort_by: 'added' | 'date' = 'added';
 
+	let selected_manager = $manager;
+
 	$: {
-		sort_by;
+		selected_manager = $manager;
+		if (is_shared && $manager.user && browser) {
+			selected_manager = new Manager();
+			for (let war of $manager.user.wars) {
+				selected_manager.add_war(war.guild_name, war.name, war.date, war.is_nodewar, war.logs)!;
+			}
+		}
 	}
 
 	export let is_shared = false;
-
-	let selected_manager = $manager;
-	if (is_shared && $manager.user && browser) {
-		selected_manager = new Manager();
-		for (let war of $manager.user.wars) {
-			selected_manager.add_war(war.guild_name, war.name, war.date, war.is_nodewar, war.logs)!;
-		}
-	}
 </script>
 
 <nav class="level">
@@ -64,12 +64,13 @@
 				</div>
 			</div>
 		</div>
-
-		<p class="level-item mr-2">
-			<Modal closeButton={false} styleWindow={{ background: 'var(--color-bg-primary)' }}>
-				<AddWarButton />
-			</Modal>
-		</p>
+		{#if !is_shared}
+			<p class="level-item mr-2">
+				<Modal closeButton={false} styleWindow={{ background: 'var(--color-bg-primary)' }}>
+					<AddWarButton />
+				</Modal>
+			</p>
+		{/if}
 	</div>
 </nav>
 <div class="wars">
