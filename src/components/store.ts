@@ -108,7 +108,7 @@ export class Manager {
 	}
 
 	find_or_create_player(name: string, guild: Guild) {
-		let player = this.players.find((p) => p.name == name);
+		let player = this.players.find((p) => p.name == name && p.guild == guild);
 
 		if (!player) {
 			player = new Player(name, guild);
