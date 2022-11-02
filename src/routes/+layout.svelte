@@ -26,11 +26,11 @@
 </script>
 
 <svelte:head>
-	<meta content="BDO Combat Analyzer" property="og:title" />
-	<meta
-		content="A website allowing you to analyze your combat logs from Nodewars and GvGs"
-		property="og:description"
-	/>
+	<meta content={$page.data.title} property="og:title" />
+	<meta name="title" content={$page.data.title} />
+	<meta content={$page.data.description} property="og:description" />
+	<meta name="description" content={$page.data.description} />
+	<meta property="twitter:description" content={$page.data.description} />
 	<meta content={$page.url.href} property="og:url" />
 </svelte:head>
 

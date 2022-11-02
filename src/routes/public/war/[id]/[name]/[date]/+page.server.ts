@@ -17,7 +17,17 @@ export const load: PageServerLoad = async ({ params }) => {
 		}
 	});
 	if (war) {
-		return war;
+		const guilds: string[] = [];
+		for (let log of war.logs) {
+			if (!guilds.includes(log.guild)) {
+				guilds.push(log.guild);
+			}
+		}
+		return {
+			war: war,
+			description: `War against: ${guilds.join(', ')}`,
+			title: `${war.name}`
+		};
 	}
 
 	throw error(404, 'Not found');
