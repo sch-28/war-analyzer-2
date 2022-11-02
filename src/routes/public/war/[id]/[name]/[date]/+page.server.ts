@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	if (war) {
 		const guilds: string[] = [];
 		for (let log of war.logs) {
-			if (!guilds.includes(log.guild)) {
+			if (!guilds.includes(log.guild) && log.guild != "" && log.guild != "-1") {
 				guilds.push(log.guild);
 			}
 		}
