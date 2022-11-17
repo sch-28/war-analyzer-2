@@ -1,6 +1,7 @@
 import { HOST_ADDRESS, DISCORD_API_URL, ComSpec } from '$env/static/private';
 import type { Cookies, Handle, RequestEvent, ResolveOptions } from '@sveltejs/kit';
 import type { MaybePromise } from '@sveltejs/kit/types/private';
+import { refresh_discord_token } from './api/refresh';
 import { prisma } from './components/prisma';
 import type { User } from './types/user';
 
@@ -49,7 +50,13 @@ export const handle: Handle = async (request) => {
 	let new_cookies = '';
 
 	if (refresh_token && !access_token) {
-		const refresh_request = await fetch(`${HOST_ADDRESS}/discord/refresh?code=${refresh_token}`);
+		//const refresh_request =await fetch(`${HOST_ADDRESS}/discord/refresh?code=${refresh_token}`);
+		const refresh_request = await refresh_discord_token(refresh_token);
+		if ('error' in refresh_request) {
+			console.error(refresh_request.error);
+			const response = await request.resolve(request.event);
+			return response;
+		}
 
 		const discord_response = await refresh_request.json();
 
