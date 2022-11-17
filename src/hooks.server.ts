@@ -42,7 +42,7 @@ async function set_session(
 }
 
 export const handle: Handle = async (request) => {
-	var startTime = performance.now();
+	const startTime = performance.now();
 	const cookies = request.event.cookies;
 
 	const refresh_token = cookies.get('refresh_token');
@@ -52,7 +52,10 @@ export const handle: Handle = async (request) => {
 
 	if (refresh_token && !access_token) {
 		//const refresh_request =await fetch(`${HOST_ADDRESS}/discord/refresh?code=${refresh_token}`);
+		const startTime3 = performance.now();
 		const refresh_request = await refresh_discord_token(refresh_token);
+		const endTime3 = performance.now();
+		console.log(`Call to fetch user token took ${endTime3 - startTime3} milliseconds`);
 		if ('error' in refresh_request) {
 			console.error(refresh_request, refresh_request.error);
 			const response = await request.resolve(request.event);
@@ -71,17 +74,26 @@ export const handle: Handle = async (request) => {
 			const response = await discord_request.json();
 
 			if (response.id) {
+				const startTime2 = performance.now();
 				request.event.locals.user = await set_session(request, response);
+				const endTime2 = performance.now();
+				console.log(`Call to database took ${endTime2 - startTime2} milliseconds`);
 			}
 		}
 	} else if (access_token) {
+		const startTime3 = performance.now();
 		const discord_request = await fetch(`${DISCORD_API_URL}/users/@me`, {
 			headers: { Authorization: `Bearer ${access_token}` }
 		});
+		const endTime3 = performance.now();
+		console.log(`Call to fetch user took ${endTime3 - startTime3} milliseconds`);
 
 		const response = await discord_request.json();
 		if (response.id) {
+			const startTime2 = performance.now();
 			request.event.locals.user = await set_session(request, response);
+			const endTime2 = performance.now();
+			console.log(`Call to database took ${endTime2 - startTime2} milliseconds`);
 		}
 	}
 
@@ -90,7 +102,7 @@ export const handle: Handle = async (request) => {
 		response.headers.set('Set-Cookie', new_cookies);
 		response.headers.set('etag', '');
 	}
-	var endTime = performance.now();
+	const endTime = performance.now();
 
 	console.log(`Call to authenticate user took ${endTime - startTime} milliseconds`);
 	return response;
