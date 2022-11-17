@@ -42,6 +42,7 @@ async function set_session(
 }
 
 export const handle: Handle = async (request) => {
+	var startTime = performance.now();
 	const cookies = request.event.cookies;
 
 	const refresh_token = cookies.get('refresh_token');
@@ -89,5 +90,8 @@ export const handle: Handle = async (request) => {
 		response.headers.set('Set-Cookie', new_cookies);
 		response.headers.set('etag', '');
 	}
+	var endTime = performance.now();
+
+	console.log(`Call to authenticate user took ${endTime - startTime} milliseconds`);
 	return response;
 };
