@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -25,8 +25,9 @@ model War {
   name       String
   guild_name String
   logs       Log[]
+  id         Int     @id @unique @default(autoincrement())
 
-  @@id([date, name, userId])
+  @@unique([date, name, userId])
 }
 
 model Log {
@@ -36,8 +37,6 @@ model Log {
   player_two String
   guild      String
   is_kill    Boolean
-  war        War     @relation(fields: [warDate, warName, warUserId], references: [date, name, userId], onDelete: Cascade)
-  warDate    String
-  warName    String
-  warUserId  String
+  war        War     @relation(fields: [warId], references: [id], onDelete: Cascade)
+  warId Int
 }

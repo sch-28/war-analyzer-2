@@ -82,9 +82,11 @@
 						<div class="list-item-title">{war.name}</div>
 						<div class="list-item-description">{war.formatted_date}</div>
 					</div>
+					{#if !is_shared}
 					<div class="kd">
 						{war.kill_events.length} - {war.death_events.length}
 					</div>
+					{/if}
 					<div class="guilds">
 						{#each war.enemy_guilds as local_guild}
 							<div class="guild">
