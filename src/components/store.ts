@@ -229,7 +229,7 @@ export class Manager {
 		}
 
 		const id = await (
-			await fetch('https://www.ikusa.site/api/migrate', {
+			await fetch('https://ikusa.site/api/migrate', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
