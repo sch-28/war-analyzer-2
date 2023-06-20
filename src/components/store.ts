@@ -6,6 +6,7 @@ import type { Writable } from 'svelte/store';
 
 import { writable, get } from 'svelte/store';
 import { find_or_push } from './utils';
+import { goto } from '$app/navigation';
 
 const storage = (key: string, initValue: Manager): Writable<Manager> => {
 	const store = writable(initValue);
@@ -209,6 +210,41 @@ export class Manager {
 		}
 		return true;
 	}
-}
 
+	async migrate() {
+		const migrated_wars: MigratedWar[] = [];
+		for (const war of this.wars) {
+			const migrated_war = {
+				name: war.name,
+				date: war.date,
+				guild: war.guild_name,
+				logs: war.logs.map(
+					(l) =>
+						`[${l.time_string}] ${l.player_one.name} ${l.kill ? 'has killed' : 'died to'} ${
+							l.player_two.name
+						} from ${l.player_two.guild.name}`
+				)
+			};
+			migrated_wars.push(migrated_war);
+		}
+
+		const id = await (
+			await fetch('https://www.ikusa.site/api/migrate', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(migrated_wars)
+			})
+		).text();
+
+		goto(`https://www.ikusa.site/wars?id=${id}&migrate`);
+	}
+}
+type MigratedWar = {
+	name: string;
+	date: string;
+	guild: string;
+	logs: string[];
+};
 export const manager = storage('manager', new Manager());
